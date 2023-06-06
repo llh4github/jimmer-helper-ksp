@@ -1,27 +1,13 @@
-plugins {
-    kotlin("jvm") version "1.8.20"
-    application
+val projectVersion = file("project.version").readText().trim()
+allprojects {
+    group = "com.github.llh4github"
+    version = projectVersion
+
+//    java.sourceCompatibility = JavaVersion.VERSION_11
+//    java.targetCompatibility = JavaVersion.VERSION_11
+
 }
-
-group = "com.github.llh4github"
-version = "1.0-SNAPSHOT"
-
 repositories {
+//    maven { setUrl("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/") }
     mavenCentral()
-}
-
-dependencies {
-    testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-
-kotlin {
-    jvmToolchain(11)
-}
-
-application {
-    mainClass.set("MainKt")
 }
