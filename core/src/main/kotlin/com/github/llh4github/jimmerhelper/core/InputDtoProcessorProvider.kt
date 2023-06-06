@@ -12,6 +12,6 @@ import com.google.devtools.ksp.processing.SymbolProcessorProvider
 class InputDtoProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
         environment.logger.info("生成 inputDto 对象插件运行成功")
-        TODO("Not yet implemented")
+        return InputDtoProcessor()
     }
 }
