@@ -53,10 +53,15 @@ val relationListAnnoList =
     listOf(JimmerAnno.manyToMany)
 
 /**
+ * Jimmer框架中合法的实体注解
+ */
+val JimmerEntityAnno = listOf(JimmerAnno.entity, JimmerAnno.superclass)
+
+/**
  * 下列注解暂不生成对应字段
  */
 val ignoreAnnoList =
-    listOf(JimmerAnno.transient,JimmerAnno.formula)
+    listOf(JimmerAnno.transient, JimmerAnno.formula)
 
 object IdType {
     val intKey = Int::class

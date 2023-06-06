@@ -6,7 +6,7 @@ package com.github.llh4github.jimmerhelper.core.dto
  * Created At 2023/6/6 17:39
  * @author llh
  */
-data class ClassDefinition(
+data class ClassInfoDto(
     /**
      * 类名
      */
@@ -19,7 +19,12 @@ data class ClassDefinition(
      * 类注释
      */
     val doc: String? = null,
-){
+
+    /**
+     * 是否是被[org.babyfish.jimmer.sql.MappedSuperclass]注解修饰的类
+     */
+    val isSupperClass: Boolean = false,
+) {
     /**
      * input-dto辅助类名
      */
