@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.7.10"
-jimmer = "0.7.5"
+jimmer = "0.7.77"
 kotlinpoet = "1.12.0"
 junit = "5.9.0"
 googleKsp = "1.7.10-1.0.6"
