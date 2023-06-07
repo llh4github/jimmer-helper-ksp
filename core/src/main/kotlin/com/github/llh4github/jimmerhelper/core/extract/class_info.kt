@@ -20,16 +20,18 @@ private fun isJimmerModelClass(declaration: KSClassDeclaration): Boolean {
 }
 
 
-private fun extractSingleClassInfo(declaration: KSClassDeclaration): ClassInfoDto {
+private fun extractSingleClassInfo(classDeclaration: KSClassDeclaration): ClassInfoDto {
     val dto = ClassInfoDto(
-        packageName = declaration.packageName.asString(),
-        className = declaration.className().simpleName,
-        doc = declaration.docString,
-        isSupperClass = isSupperClass(declaration),
+        packageName = classDeclaration.packageName.asString(),
+        className = classDeclaration.className().simpleName,
+        doc = classDeclaration.docString,
+        isSupperClass = isSupperClass(classDeclaration),
+        fields = extractFieldInfo(classDeclaration.getAllProperties()),
     )
     logger.info("test  : $dto")
     return dto
 }
+
 private fun isSupperClass(declaration: KSClassDeclaration): Boolean {
-   return declaration.annotations.hasAnno(JimmerAnno.superclass)
+    return declaration.annotations.hasAnno(JimmerAnno.superclass)
 }

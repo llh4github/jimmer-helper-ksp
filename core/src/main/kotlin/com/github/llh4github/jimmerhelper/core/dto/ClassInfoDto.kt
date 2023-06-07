@@ -24,9 +24,19 @@ data class ClassInfoDto(
      * 是否是被[org.babyfish.jimmer.sql.MappedSuperclass]注解修饰的类
      */
     val isSupperClass: Boolean = false,
+    /**
+     * 字段信息
+     */
+    val fields: List<FieldInfoDto> = emptyList(),
 ) {
     /**
      * input-dto辅助类名
      */
     val inputDtoClassName = "${className}Input"
+
+    /**
+     * input-dto 辅助类的包名
+     */
+    val inputDtoPkg = "${packageName}.helper"
+
 }
