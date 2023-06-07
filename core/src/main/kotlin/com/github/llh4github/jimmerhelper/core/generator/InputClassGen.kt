@@ -33,13 +33,15 @@ class InputClassGen(private val dto: ClassInfoDto) {
     private fun constructorFun(dto: ClassInfoDto): Tuple2<FunSpec, MutableList<PropertySpec>> {
         val constructorFun = FunSpec.constructorBuilder()
         val propertyList = mutableListOf<PropertySpec>()
-        dto.fields.forEach {
+        dto.fields
+            .filter { !it.isIdViewListField }
+            .forEach {
             val type = propertyType(it)
             val defaultValue = propertyDefaultValue(it)
 
             val propertySpec = if (it.isList) {
                 PropertySpec.builder(it.name, type)
-                    .mutable(true)
+                    .mutable(false)
                     .initializer(it.name)
                     .build()
             } else {

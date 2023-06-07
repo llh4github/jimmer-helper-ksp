@@ -1,6 +1,6 @@
 package com.github.llh4github.jimmerhelper.example
 
-import org.babyfish.jimmer.sql.Entity
+import org.babyfish.jimmer.sql.*
 import javax.validation.constraints.Size
 
 /**
@@ -16,4 +16,20 @@ interface Book : BaseModel {
 
     val price: Int
 
+    @ManyToMany
+    @JoinTable(
+        name = "BOOK_AUTHOR_MAPPING",
+        joinColumnName = "BOOK_ID",
+        inverseJoinColumnName = "AUTHOR_ID"
+    )
+    val authors: List<Author>
+
+    @ManyToOne
+    val store: BookStore?
+
+    @IdView
+    val storeId: Int?
+
+    @IdView("authors")
+    val authorIds: List<Int>
 }

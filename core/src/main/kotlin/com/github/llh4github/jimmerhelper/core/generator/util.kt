@@ -15,7 +15,9 @@ internal fun interfaceBuilder(dto: ClassInfoDto) =
         .addModifiers(KModifier.PUBLIC)
 
 internal fun properties(fields: List<FieldInfoDto>, init: Boolean = false): List<PropertySpec> {
-    return fields.map {
+    return fields
+        .filter { !it.isIdViewListField } // 暂不处理此类型字段
+        .map {
         val type = propertyType(it)
         val propertySpec = if (it.isList) {
             PropertySpec.builder(it.name, type)
@@ -36,7 +38,7 @@ internal fun propertyType(field: FieldInfoDto): TypeName {
     return if (field.isRelationField) {
         if (field.isList)
             ClassName(field.typePackage, field.typeName)
-                .parameterizedBy(ClassName(field.typeParamPkgStr!!, field.typeParamTypeSupportName!!))
+                .parameterizedBy(ClassName(field.typeParamTypeInputDtoPkgName!!, field.typeParamTypeInputDtoName!!))
         else ClassName(field.typePackage, field.typeName + inputDtoSuffix).copy(true)
     } else {
         ClassName(field.typePackage, field.typeName).copy(true)

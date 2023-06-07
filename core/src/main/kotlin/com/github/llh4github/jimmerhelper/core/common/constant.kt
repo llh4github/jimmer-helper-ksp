@@ -20,6 +20,7 @@ object JimmerAnno {
     val oneTyMany = OneToMany::class
     val superclass = MappedSuperclass::class
     val formula = Formula::class
+    val idView = IdView::class
 }
 
 /**

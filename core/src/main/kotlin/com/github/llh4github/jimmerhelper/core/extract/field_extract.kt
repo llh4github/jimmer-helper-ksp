@@ -25,9 +25,11 @@ private fun extractFieldInfo(property: KSPropertyDeclaration): FieldInfoDto {
     val isRelation = property.annotations.hasAnyAnno(relationAnnoList)
     var isList = false
     var arg: KSTypeArgument? = null
+    var isIdViewListFlag = false
     if ("$typePackage.$tyName" == "kotlin.collections.List") {
         isList = true
         arg = property.type.resolve().arguments[0]
+        isIdViewListFlag = property.annotations.hasAnno(JimmerAnno.idView)
     }
     return FieldInfoDto(
         name = fieldName,
@@ -39,6 +41,7 @@ private fun extractFieldInfo(property: KSPropertyDeclaration): FieldInfoDto {
         isList = isList,
         typeParamPkgStr = arg?.typePkg(),
         typeParamTypeName = arg?.typeName(),
-        isPrimaryKey = isPrimaryKey
+        isPrimaryKey = isPrimaryKey,
+        isIdViewListField = isIdViewListFlag
     )
 }
