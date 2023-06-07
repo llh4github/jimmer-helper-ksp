@@ -23,6 +23,6 @@ class InputDtoProcessorProvider : SymbolProcessorProvider {
             logger.info("Hello $it, This is Jimmer-Helper-KSP.")
         }
         logger.info("生成 inputDto 对象插件运行成功")
-        return InputDtoProcessor()
+        return InputDtoProcessor(environment.codeGenerator)
     }
 }

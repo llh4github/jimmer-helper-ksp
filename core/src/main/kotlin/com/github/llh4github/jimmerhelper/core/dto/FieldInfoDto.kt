@@ -1,5 +1,8 @@
 package com.github.llh4github.jimmerhelper.core.dto
 
+import com.github.llh4github.jimmerhelper.core.common.inputDtoSuffix
+import com.squareup.kotlinpoet.ClassName
+
 /**
  *
  *
@@ -50,4 +53,10 @@ data class FieldInfoDto(
 ){
 
     val typeParamQualifier: String = "$typeParamTypeName.$typeParamTypeName"
+    val isComplexType = complexTypeStr != null
+
+    val typeParamTypeSupportName: String? = if (null != typeParamTypeName) "${typeParamTypeName}$inputDtoSuffix" else null
+    fun toClassName(): ClassName {
+        return ClassName(typePackage, typeName)
+    }
 }

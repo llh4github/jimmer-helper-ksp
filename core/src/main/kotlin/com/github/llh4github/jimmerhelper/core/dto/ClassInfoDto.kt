@@ -35,7 +35,7 @@ data class ClassInfoDto(
     /**
      * input-dto辅助类名
      */
-    val inputDtoClassName = "${className}$inputDtoSuffix "
+    val inputDtoClassName = "${className}$inputDtoSuffix"
 
     /**
      * input-dto 辅助类的包名
