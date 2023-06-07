@@ -4,7 +4,8 @@ import com.facebook.ktfmt.format.Formatter
 import com.facebook.ktfmt.format.FormattingOptions
 import com.github.llh4github.jimmerhelper.core.common.logger
 import com.github.llh4github.jimmerhelper.core.extract.extractClassInfo
-import com.github.llh4github.jimmerhelper.core.generator.SuperClassGen
+import com.github.llh4github.jimmerhelper.core.generator.InputClassGen
+import com.github.llh4github.jimmerhelper.core.generator.SuperInterfaceGen
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver
@@ -26,9 +27,12 @@ class InputDtoProcessor(private val codeGenerator: CodeGenerator) : SymbolProces
         }
         logger.info("process start")
         val files = resolver.getAllFiles()
+
         extractClassInfo(files)
-            .map { SuperClassGen(it).build() }
-            .forEach {
+            .map {
+                if (it.isSupperClass) SuperInterfaceGen(it).build()
+                else InputClassGen(it).build()
+            }.forEach {
                 val file = codeGenerator.createNewFile(
                     Dependencies(aggregating = false),
                     it.packageName, it.name

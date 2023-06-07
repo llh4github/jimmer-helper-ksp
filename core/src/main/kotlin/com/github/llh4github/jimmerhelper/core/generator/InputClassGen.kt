@@ -1,14 +1,11 @@
 package com.github.llh4github.jimmerhelper.core.generator
 
-import com.github.llh4github.jimmerhelper.core.common.inputDtoSuffix
 import com.github.llh4github.jimmerhelper.core.dto.ClassInfoDto
 import com.squareup.kotlinpoet.*
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import javaslang.Tuple2
 
-class SuperClassGen(private val dto: ClassInfoDto) {
-    private val typeSpec = TypeSpec.classBuilder(dto.inputDtoClassName)
-        .addModifiers(KModifier.DATA)
+class InputClassGen(private val dto: ClassInfoDto) {
+    private val typeSpec = dataClassBuilder(dto)
 
     fun build(): FileSpec {
 
@@ -37,19 +34,9 @@ class SuperClassGen(private val dto: ClassInfoDto) {
         val constructorFun = FunSpec.constructorBuilder()
         val propertyList = mutableListOf<PropertySpec>()
         dto.fields.forEach {
-            val type = if (it.isRelationField) {
-                if (it.isList)
-                    ClassName(it.typePackage, it.typeName)
-                        .parameterizedBy(ClassName(it.typeParamPkgStr!!, it.typeParamTypeSupportName!!))
-                else ClassName(it.typePackage, it.typeName + inputDtoSuffix).copy(true)
-            } else {
-                ClassName(it.typePackage, it.typeName).copy(true)
-            }
-            val defaultValue = if (it.isList) {
-                "emptyList()"
-            } else {
-                "null"
-            }
+            val type = propertyType(it)
+            val defaultValue = propertyDefaultValue(it)
+
             val propertySpec = if (it.isList) {
                 PropertySpec.builder(it.name, type)
                     .mutable(true)
