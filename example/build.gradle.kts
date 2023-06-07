@@ -15,6 +15,12 @@ dependencies {
     ksp(project(":core"))
     testImplementation(kotlin("test"))
 }
+ksp{
+    /**
+     * 此参数仅用于校验KSP插件功能正常与否，无实际意义
+     */
+    arg("helloJimmerHelper","Tom")
+}
 kotlin {
     sourceSets.main {
         kotlin.srcDir("build/generated/ksp/main/kotlin")
