@@ -1,5 +1,6 @@
 package com.github.llh4github.jimmerhelper.core
 
+import com.github.llh4github.jimmerhelper.core.common.logger
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
@@ -11,7 +12,8 @@ import com.google.devtools.ksp.processing.SymbolProcessorProvider
  */
 class InputDtoProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-        environment.logger.info("生成 inputDto 对象插件运行成功")
+        logger = environment.logger
+        logger.info("生成 inputDto 对象插件运行成功")
         return InputDtoProcessor()
     }
 }

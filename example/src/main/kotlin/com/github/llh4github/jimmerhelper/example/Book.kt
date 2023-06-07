@@ -1,8 +1,6 @@
 package com.github.llh4github.jimmerhelper.example
 
-import org.babyfish.jimmer.Immutable
 import org.babyfish.jimmer.sql.Entity
-import org.babyfish.jimmer.sql.Id
 import javax.validation.constraints.Size
 
 /**
@@ -11,15 +9,10 @@ import javax.validation.constraints.Size
  * @author llh
  */
 @Entity
-interface Book {
-
-
-    @Id
-    val id: Int
+interface Book : BaseModel {
 
     @get:Size(max = 50)
     val name: String
-
 
     val price: Int
 
