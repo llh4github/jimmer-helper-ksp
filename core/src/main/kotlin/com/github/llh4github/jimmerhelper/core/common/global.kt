@@ -12,7 +12,13 @@ lateinit var logger: KSPLogger
  */
 lateinit var inputDtoSuffix: String
 
+/**
+ * InputDto类所属包名，默认为`helper`
+ */
+lateinit var inputDtoPkgName: String
+
 object OptionKey {
     const val inputDtoSuffixKey = "inputDtoSuffix"
+    const val inputDtoPkgNameKey = "inputDtoPkgName"
     const val hello = "helloJimmerHelper"
 }
