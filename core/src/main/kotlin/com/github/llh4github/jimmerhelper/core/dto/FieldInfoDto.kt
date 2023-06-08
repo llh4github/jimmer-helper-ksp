@@ -1,5 +1,9 @@
 package com.github.llh4github.jimmerhelper.core.dto
 
+import com.github.llh4github.jimmerhelper.core.common.inputDtoPkgName
+import com.github.llh4github.jimmerhelper.core.common.inputDtoSuffix
+import com.squareup.kotlinpoet.ClassName
+
 /**
  *
  *
@@ -47,7 +51,28 @@ data class FieldInfoDto(
      * List的参数类型名
      */
     val typeParamTypeName: String? = null,
-){
+
+    /**
+     * 是否为集合类型的IdView字段
+     */
+    val isIdViewListField: Boolean = false,
+) {
 
     val typeParamQualifier: String = "$typeParamTypeName.$typeParamTypeName"
+    val isComplexType = complexTypeStr != null
+
+
+    val typeParamTypeInputDtoPkgName: String? =
+        if (null != typeParamPkgStr) "$typeParamPkgStr.$inputDtoPkgName" else null
+
+    val typeParamTypeInputDtoName: String? =
+        if (null != typeParamTypeName) {
+            "${typeParamTypeName}$inputDtoSuffix"
+        } else {
+            null
+        }
+
+    fun toClassName(): ClassName {
+        return ClassName(typePackage, typeName)
+    }
 }

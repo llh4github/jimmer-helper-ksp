@@ -1,5 +1,8 @@
 package com.github.llh4github.jimmerhelper.core.dto
 
+import com.github.llh4github.jimmerhelper.core.common.inputDtoPkgName
+import com.github.llh4github.jimmerhelper.core.common.inputDtoSuffix
+
 /**
  *
  *
@@ -28,15 +31,19 @@ data class ClassInfoDto(
      * 字段信息
      */
     val fields: List<FieldInfoDto> = emptyList(),
+    /**
+     * 父类名称全集
+     */
+    val parentNames: List<String> = emptyList(),
 ) {
     /**
      * input-dto辅助类名
      */
-    val inputDtoClassName = "${className}Input"
+    val inputDtoClassName = "${className}$inputDtoSuffix"
 
     /**
      * input-dto 辅助类的包名
      */
-    val inputDtoPkg = "${packageName}.helper"
+    val inputDtoPkg = "${packageName}.$inputDtoPkgName"
 
 }

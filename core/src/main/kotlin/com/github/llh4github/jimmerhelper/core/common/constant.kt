@@ -20,6 +20,7 @@ object JimmerAnno {
     val oneTyMany = OneToMany::class
     val superclass = MappedSuperclass::class
     val formula = Formula::class
+    val idView = IdView::class
 }
 
 /**
@@ -39,6 +40,7 @@ object JimmerMember {
 //    fun addByFun(draftClass: String): ClassName {
 //        return ClassName(draftClass, "addBy")
 //    }
+    val inputInterface = ClassName("org.babyfish.jimmer","Input")
 
     val kExample = ClassName("org.babyfish.jimmer.sql.kt.ast.query", "KExample")
     val exampleFun = MemberName("org.babyfish.jimmer.sql.kt.ast.query", "example")
