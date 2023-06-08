@@ -24,7 +24,7 @@ private fun isJimmerModelClass(declaration: KSClassDeclaration): Boolean {
 private fun extractSingleClassInfo(classDeclaration: KSClassDeclaration): ClassInfoDto {
     val isSupperClass = isSupperClass(classDeclaration)
     val fields = extractFieldInfo(classDeclaration.getAllProperties())
-    return ClassInfoDto(
+    val dto = ClassInfoDto(
         packageName = classDeclaration.packageName.asString(),
         className = classDeclaration.className().simpleName,
         doc = classDeclaration.docString,
@@ -32,6 +32,9 @@ private fun extractSingleClassInfo(classDeclaration: KSClassDeclaration): ClassI
         fields = fields,
         parentNames = extractParentNames(classDeclaration)
     )
+    if (isSupperClass)
+        SUPER_CLASS_MAP[dto.className] = dto
+    return dto
 }
 
 private fun extractParentNames(classDeclaration: KSClassDeclaration): List<String> {

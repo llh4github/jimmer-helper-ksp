@@ -23,3 +23,8 @@ object OptionKey {
     const val inputDtoPkgNameKey = "inputDtoPkgName"
     const val hello = "helloJimmerHelper"
 }
+
+/**
+ * 父类名称-类信息map
+ */
+val SUPER_CLASS_MAP = mutableMapOf<String, ClassInfoDto>()

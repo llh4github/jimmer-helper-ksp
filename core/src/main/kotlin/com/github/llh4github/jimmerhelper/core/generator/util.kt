@@ -1,6 +1,7 @@
 package com.github.llh4github.jimmerhelper.core.generator
 
 import com.github.llh4github.jimmerhelper.core.common.JimmerMember
+import com.github.llh4github.jimmerhelper.core.common.SUPER_CLASS_MAP
 import com.github.llh4github.jimmerhelper.core.common.inputDtoPkgName
 import com.github.llh4github.jimmerhelper.core.common.inputDtoSuffix
 import com.github.llh4github.jimmerhelper.core.dto.ClassInfoDto
@@ -15,6 +16,20 @@ internal fun dataClassBuilder(dto: ClassInfoDto) =
 internal fun interfaceBuilder(dto: ClassInfoDto) =
     TypeSpec.interfaceBuilder(dto.inputDtoClassName)
         .addModifiers(KModifier.PUBLIC)
+
+/**
+ * [fieldName]是否是父接口中的字段。
+ * [parentName]：当前类的父接口名
+ */
+internal fun isParentField(parentName: List<String>, fieldName: String): Boolean {
+    if (parentName.isEmpty()) {
+        return false
+    }
+    return SUPER_CLASS_MAP.filter { parentName.contains(it.key) }
+        .flatMap { it.value.fields }
+        .map { it.name }
+        .any { it == fieldName }
+}
 
 /**
  * 生成类的提醒注释
