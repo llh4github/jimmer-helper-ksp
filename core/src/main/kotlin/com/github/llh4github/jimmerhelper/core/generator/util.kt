@@ -1,5 +1,6 @@
 package com.github.llh4github.jimmerhelper.core.generator
 
+import com.github.llh4github.jimmerhelper.core.common.JimmerMember
 import com.github.llh4github.jimmerhelper.core.common.inputDtoPkgName
 import com.github.llh4github.jimmerhelper.core.common.inputDtoSuffix
 import com.github.llh4github.jimmerhelper.core.dto.ClassInfoDto
@@ -21,6 +22,10 @@ internal fun interfaceBuilder(dto: ClassInfoDto) =
 internal val comment = CodeBlock.builder()
     .add("此文件由 %L 插件生成。请勿修改。\n", "jimmer-helper-ksp")
     .build()
+
+internal fun inputInterface(dto: ClassInfoDto): ParameterizedTypeName {
+    return JimmerMember.inputInterface.parameterizedBy(ClassName(dto.packageName, dto.className))
+}
 
 internal fun properties(fields: List<FieldInfoDto>, init: Boolean = false): List<PropertySpec> {
     return fields
