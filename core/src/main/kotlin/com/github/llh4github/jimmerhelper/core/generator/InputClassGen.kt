@@ -14,6 +14,7 @@ class InputClassGen(private val dto: ClassInfoDto) {
             .addImport(dto.packageName, dto.className)
             .addType(
                 typeSpec
+                    .addKdoc(comment)
                     .addAnnotation(
                         AnnotationSpec.builder(Suppress::class)
                             .apply {

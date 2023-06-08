@@ -12,6 +12,7 @@ internal fun extractFieldInfo(
     properties: Sequence<KSPropertyDeclaration>
 ): List<FieldInfoDto> {
     return properties
+        .filter { !it.annotations.hasAnyAnno(ignoreAnnoList) }
         .map { extractFieldInfo(it) }
         .toList()
 }

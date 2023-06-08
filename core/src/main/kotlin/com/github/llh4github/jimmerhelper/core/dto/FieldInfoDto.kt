@@ -66,7 +66,11 @@ data class FieldInfoDto(
         if (null != typeParamPkgStr) "$typeParamPkgStr.$inputDtoPkgName" else null
 
     val typeParamTypeInputDtoName: String? =
-        if (null != typeParamTypeName) "${typeParamTypeName}$inputDtoSuffix" else null
+        if (null != typeParamTypeName) {
+            "${typeParamTypeName}$inputDtoSuffix"
+        } else {
+            null
+        }
 
     fun toClassName(): ClassName {
         return ClassName(typePackage, typeName)

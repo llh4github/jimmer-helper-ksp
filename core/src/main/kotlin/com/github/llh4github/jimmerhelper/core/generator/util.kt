@@ -15,6 +15,13 @@ internal fun interfaceBuilder(dto: ClassInfoDto) =
     TypeSpec.interfaceBuilder(dto.inputDtoClassName)
         .addModifiers(KModifier.PUBLIC)
 
+/**
+ * 生成类的提醒注释
+ */
+internal val comment = CodeBlock.builder()
+    .add("此文件由 %L 插件生成。请勿修改。\n", "jimmer-helper-ksp")
+    .build()
+
 internal fun properties(fields: List<FieldInfoDto>, init: Boolean = false): List<PropertySpec> {
     return fields
         .filter { !it.isIdViewListField } // 暂不处理此类型字段
@@ -43,7 +50,7 @@ internal fun propertyType(field: FieldInfoDto): TypeName {
 //            logger.info("type argument : ${clazz.typeArguments}")
             clazz
         } else {
-            ClassName(field.typePackage+".${inputDtoPkgName}", field.typeName + inputDtoSuffix).copy(true)
+            ClassName(field.typePackage + ".${inputDtoPkgName}", field.typeName + inputDtoSuffix).copy(true)
         }
     } else {
         ClassName(field.typePackage, field.typeName).copy(true)

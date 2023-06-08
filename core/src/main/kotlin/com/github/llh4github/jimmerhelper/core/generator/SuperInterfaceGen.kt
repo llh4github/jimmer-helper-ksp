@@ -17,6 +17,7 @@ class SuperInterfaceGen(private val dto: ClassInfoDto) {
 
         return FileSpec.builder(dto.inputDtoPkg, dto.inputDtoClassName)
             .addType(typeSpec
+                .addKdoc(comment)
                 .addAnnotation(
                     AnnotationSpec.builder(Suppress::class)
                         .apply {
