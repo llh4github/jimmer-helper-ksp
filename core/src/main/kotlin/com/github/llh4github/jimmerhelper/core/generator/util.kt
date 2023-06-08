@@ -20,7 +20,7 @@ internal fun interfaceBuilder(dto: ClassInfoDto) =
  * 生成类的提醒注释
  */
 internal val comment = CodeBlock.builder()
-    .add("此文件由 %L 插件生成。请勿修改。\n", "jimmer-helper-ksp")
+    .add("由 %L 插件生成。请勿修改。\n", "jimmer-helper-ksp")
     .build()
 
 internal fun inputInterface(dto: ClassInfoDto): ParameterizedTypeName {

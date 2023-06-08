@@ -1,5 +1,6 @@
 package com.github.llh4github.jimmerhelper.core.generator
 
+import com.github.llh4github.jimmerhelper.core.common.logger
 import com.github.llh4github.jimmerhelper.core.dto.ClassInfoDto
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.FileSpec

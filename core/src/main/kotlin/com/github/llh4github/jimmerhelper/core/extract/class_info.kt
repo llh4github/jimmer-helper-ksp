@@ -2,6 +2,7 @@ package com.github.llh4github.jimmerhelper.core.extract
 
 import com.github.llh4github.jimmerhelper.core.common.*
 import com.github.llh4github.jimmerhelper.core.dto.ClassInfoDto
+import com.google.devtools.ksp.getAllSuperTypes
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
 import org.babyfish.jimmer.ksp.className
@@ -21,15 +22,23 @@ private fun isJimmerModelClass(declaration: KSClassDeclaration): Boolean {
 
 
 private fun extractSingleClassInfo(classDeclaration: KSClassDeclaration): ClassInfoDto {
-    val dto = ClassInfoDto(
+    val isSupperClass = isSupperClass(classDeclaration)
+    val fields = extractFieldInfo(classDeclaration.getAllProperties())
+    return ClassInfoDto(
         packageName = classDeclaration.packageName.asString(),
         className = classDeclaration.className().simpleName,
         doc = classDeclaration.docString,
-        isSupperClass = isSupperClass(classDeclaration),
-        fields = extractFieldInfo(classDeclaration.getAllProperties()),
+        isSupperClass = isSupperClass,
+        fields = fields,
+        parentNames = extractParentNames(classDeclaration)
     )
-    logger.info("test  : $dto")
-    return dto
+}
+
+private fun extractParentNames(classDeclaration: KSClassDeclaration): List<String> {
+    return classDeclaration.getAllSuperTypes()
+        .map { it.declaration.simpleName.asString() }
+        .filter { it != "Any" }
+        .toList()
 }
 
 private fun isSupperClass(declaration: KSClassDeclaration): Boolean {

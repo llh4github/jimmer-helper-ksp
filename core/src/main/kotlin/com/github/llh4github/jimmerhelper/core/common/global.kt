@@ -1,5 +1,6 @@
 package com.github.llh4github.jimmerhelper.core.common
 
+import com.github.llh4github.jimmerhelper.core.dto.ClassInfoDto
 import com.google.devtools.ksp.processing.KSPLogger
 
 /**

@@ -31,6 +31,10 @@ data class ClassInfoDto(
      * 字段信息
      */
     val fields: List<FieldInfoDto> = emptyList(),
+    /**
+     * 父类名称全集
+     */
+    val parentNames: List<String> = emptyList(),
 ) {
     /**
      * input-dto辅助类名
