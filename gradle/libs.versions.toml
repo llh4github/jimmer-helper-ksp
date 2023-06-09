@@ -4,7 +4,7 @@ jimmer = "0.7.77"
 kotlinpoet = "1.12.0"
 junit = "5.9.0"
 googleKsp = "1.7.10-1.0.6"
-ktfmt = "0.41"
+ktfmt = "0.44"
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
