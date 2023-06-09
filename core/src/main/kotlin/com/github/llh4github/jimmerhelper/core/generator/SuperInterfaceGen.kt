@@ -1,8 +1,6 @@
 package com.github.llh4github.jimmerhelper.core.generator
 
-import com.github.llh4github.jimmerhelper.core.common.logger
 import com.github.llh4github.jimmerhelper.core.dto.ClassInfoDto
-import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.FileSpec
 
 /**
@@ -17,19 +15,13 @@ class SuperInterfaceGen(private val dto: ClassInfoDto) {
     fun build(): FileSpec {
 
         return FileSpec.builder(dto.inputDtoPkg, dto.inputDtoClassName)
-            .addType(typeSpec
-                .addKdoc(comment)
-                .addAnnotation(
-                    AnnotationSpec.builder(Suppress::class)
-                        .apply {
-                            addMember("\"RedundantVisibilityModifier\"")
-                            addMember("\"Unused\"")
-                        }
-                        .build()
-
-                )
-                .addProperties(properties(dto.fields))
-                .build())
+            .addType(
+                typeSpec
+                    .addKdoc(comment)
+                    .addAnnotation(suppressWarns)
+                    .addProperties(properties(dto.fields))
+                    .build()
+            )
             .build()
     }
 }

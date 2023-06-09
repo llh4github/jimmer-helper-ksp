@@ -16,6 +16,8 @@ class InputClassGen(private val dto: ClassInfoDto) {
         val builder = FileSpec.builder(dto.inputDtoPkg, dto.inputDtoClassName)
             .addImport(dto.packageName, dto.className)
         builder.addImport(dto.packageName, needImportJimmerExtFun(dto))
+
+
         return builder
             .addType(
                 typeSpec
@@ -23,20 +25,14 @@ class InputClassGen(private val dto: ClassInfoDto) {
                     .addSuperinterface(inputInterface(dto))
                     .addSuperinterfaces(inputParentInterface(dto))
                     .addFunction(overrideToEntity(dto))
-                    .addAnnotation(
-                        AnnotationSpec.builder(Suppress::class)
-                            .apply {
-                                addMember("\"RedundantVisibilityModifier\"")
-                                addMember("\"Unused\"")
-                            }
-                            .build()
-
-                    )
+                    .addAnnotation(suppressWarns)
                     .addProperties(tuple._2)
                     .primaryConstructor(tuple._1)
                     .build()
 
-            ).build()
+            )
+            .addType(FetcherHelperGen(dto).build())
+            .build()
     }
 
 

@@ -29,6 +29,8 @@ object JimmerAnno {
 object JimmerMember {
     val newFun = MemberName("org.babyfish.jimmer.kt", "new")
     val eqFun = MemberName("org.babyfish.jimmer.sql.kt.ast.expression", "eq")
+    val newFetcherFun =MemberName("org.babyfish.jimmer.sql.kt.fetcher","newFetcher")
+    val fetcherClass =ClassName("org.babyfish.jimmer.sql.fetcher","Fetcher")
     val ktSqlClient = ClassName("org.babyfish.jimmer.sql.kt", "KSqlClient")
     val saveMode = ClassName("org.babyfish.jimmer.sql.ast.mutation", "SaveMode")
 
