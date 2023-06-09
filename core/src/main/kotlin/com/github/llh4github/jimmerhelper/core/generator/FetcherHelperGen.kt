@@ -12,7 +12,6 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
  * @author llh
  */
 class FetcherHelperGen(private val dto: ClassInfoDto) {
-    private val fetchDsl = ClassName(dto.packageName, "${dto.className}FetcherDsl")
     private fun fetcherReturnType(dto: ClassInfoDto): ParameterizedTypeName {
         return JimmerMember.fetcherClass.parameterizedBy(ClassName(dto.packageName, dto.className))
     }
