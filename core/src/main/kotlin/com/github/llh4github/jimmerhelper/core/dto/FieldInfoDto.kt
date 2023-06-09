@@ -30,6 +30,10 @@ data class FieldInfoDto(
     val complexTypeStr: String? = null,
 
     /**
+     * 此字段是否被[org.babyfish.jimmer.sql.Key]注解修饰
+     */
+    val isJimmerKey: Boolean = false,
+    /**
      * 此字段是否为主键
      */
     val isPrimaryKey: Boolean = false,

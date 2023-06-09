@@ -2,11 +2,9 @@ package com.github.llh4github.jimmerhelper.core.generator
 
 import com.github.llh4github.jimmerhelper.core.common.JimmerMember
 import com.github.llh4github.jimmerhelper.core.dto.ClassInfoDto
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.ParameterizedTypeName
+import com.github.llh4github.jimmerhelper.core.dto.FieldInfoDto
+import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.TypeSpec
 
 /**
  *
@@ -26,7 +24,7 @@ class FetcherHelperGen(private val dto: ClassInfoDto) {
 
         builder.addProperty(allScalarFieldsProperty)
         builder.addProperty(allTableFieldsProperty)
-
+        allKeyProperties(dto.fields)?.let { builder.addProperty(it) }
         return builder.build()
     }
 
@@ -36,5 +34,21 @@ class FetcherHelperGen(private val dto: ClassInfoDto) {
     private val allTableFieldsProperty = PropertySpec.builder("allTableFields", fetcherReturnType(dto))
         .initializer("%M(%L::class).by{%L}", JimmerMember.newFetcherFun, dto.className, "allTableFields()")
         .build()
+
+    private fun allKeyProperties(fields: List<FieldInfoDto>): PropertySpec? {
+        val list = fields.filter { it.isJimmerKey }.toList()
+        if (list.isEmpty()) {
+            return null
+        }
+        val builder = PropertySpec.builder("allKeyProperties", fetcherReturnType(dto))
+        val cb = CodeBlock.builder()
+        cb.addStatement("%M(%L::class).by{", JimmerMember.newFetcherFun, dto.className)
+        list.forEach {
+            cb.addStatement("%L()", it.name)
+        }
+        cb.addStatement("}")
+        builder.initializer(cb.build())
+        return builder.build()
+    }
 
 }
