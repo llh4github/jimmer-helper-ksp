@@ -18,7 +18,7 @@ class InputClassGen(private val dto: ClassInfoDto) {
             .addImport(dto.packageName, dto.className)
         // 导入自身包的by方法
         builder.addImport(dto.packageName, "by")
-        needImportJimmerExtFun2(dto).forEach {
+        needImportJimmerExtFun(dto).forEach {
             builder.addImport(it._1, it._2)
         }
 
@@ -84,15 +84,7 @@ class InputClassGen(private val dto: ClassInfoDto) {
         return Tuple2(primaryConstructor, propertyList)
     }
 
-    private fun needImportJimmerExtFun(dto: ClassInfoDto): List<String> {
-        val hasList = dto.fields.any { it.isList }
-        if (!hasList) {
-            return listOf("by")
-        }
-        return listOf("by", "addBy")
-    }
-
-    private fun needImportJimmerExtFun2(dto: ClassInfoDto): List<Tuple2<String, String>> {
+    private fun needImportJimmerExtFun(dto: ClassInfoDto): List<Tuple2<String, String>> {
         return dto.fields.filter { it.isRelationField }
             .map {
                 logger.info("${it.typePackage} ${it.name}")
