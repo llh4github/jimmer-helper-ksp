@@ -48,11 +48,17 @@ class InputDtoProcessor(private val codeGenerator: CodeGenerator) : SymbolProces
 
     private fun formatCode(fileSpec: FileSpec): String {
         // Use the Kotlin official code style.
-        val options = FormattingOptions(style = FormattingOptions.Style.GOOGLE, maxWidth = 120, blockIndent = 4)
+        val options = FormattingOptions(
+            style = FormattingOptions.Style.FACEBOOK,
+            maxWidth = 100,
+            blockIndent = 4
+        )
+
         // Remove tailing commas in parameter lists.
         val code = fileSpec.toString().replace(Regex(""",\s*\)"""), ")")
         return try {
             Formatter.format(options, code)
+//            code
         } catch (e: Exception) {
             logger.exception(e)
             code

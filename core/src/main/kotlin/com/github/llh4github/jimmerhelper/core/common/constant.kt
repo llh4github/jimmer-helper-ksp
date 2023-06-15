@@ -14,6 +14,7 @@ object JimmerAnno {
     val entity = Entity::class
     val transient = Transient::class
     val id = Id::class
+    val key = Key::class
     val manyToOne = ManyToOne::class
     val manyToMany = ManyToMany::class
     val oneToOne = OneToOne::class
@@ -29,18 +30,21 @@ object JimmerAnno {
 object JimmerMember {
     val newFun = MemberName("org.babyfish.jimmer.kt", "new")
     val eqFun = MemberName("org.babyfish.jimmer.sql.kt.ast.expression", "eq")
+    val newFetcherFun = MemberName("org.babyfish.jimmer.sql.kt.fetcher", "newFetcher")
+    val fetcherClass = ClassName("org.babyfish.jimmer.sql.fetcher", "Fetcher")
     val ktSqlClient = ClassName("org.babyfish.jimmer.sql.kt", "KSqlClient")
     val saveMode = ClassName("org.babyfish.jimmer.sql.ast.mutation", "SaveMode")
 
     val valueInFun = MemberName("org.babyfish.jimmer.sql.kt.ast.expression", "valueIn")
-//    fun byFunc(draftClass: String): ClassName {
+
+    //    fun byFunc(draftClass: String): ClassName {
 //        return ClassName(draftClass, "by")
 //    }
 //
 //    fun addByFun(draftClass: String): ClassName {
 //        return ClassName(draftClass, "addBy")
 //    }
-    val inputInterface = ClassName("org.babyfish.jimmer","Input")
+    val inputInterface = ClassName("org.babyfish.jimmer", "Input")
 
     val kExample = ClassName("org.babyfish.jimmer.sql.kt.ast.query", "KExample")
     val exampleFun = MemberName("org.babyfish.jimmer.sql.kt.ast.query", "example")

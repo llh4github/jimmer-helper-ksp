@@ -37,6 +37,7 @@ private fun extractFieldInfo(property: KSPropertyDeclaration): FieldInfoDto {
         typeName = tyName,
         typePackage = typePackage,
 //        complexTypeStr = complexTypeStr,
+        isJimmerKey = property.annotations.hasAnno(JimmerAnno.key),
         doc = doc,
         isRelationField = isRelation,
         isList = isList,

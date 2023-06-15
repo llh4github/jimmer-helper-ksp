@@ -38,6 +38,12 @@ internal val comment = CodeBlock.builder()
     .add("由 %L 插件生成。请勿修改。\n", "jimmer-helper-ksp")
     .build()
 
+internal val suppressWarns = AnnotationSpec.builder(Suppress::class)
+    .apply {
+        addMember("\"RedundantVisibilityModifier\"")
+        addMember("\"Unused\"")
+    }
+    .build()
 internal fun inputInterface(dto: ClassInfoDto): ParameterizedTypeName {
     return JimmerMember.inputInterface.parameterizedBy(ClassName(dto.packageName, dto.className))
 }
