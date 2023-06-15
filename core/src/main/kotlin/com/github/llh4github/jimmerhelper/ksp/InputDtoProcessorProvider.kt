@@ -1,9 +1,9 @@
-package com.github.llh4github.jimmerhelper.core
+package com.github.llh4github.jimmerhelper.ksp
 
-import com.github.llh4github.jimmerhelper.core.common.OptionKey
-import com.github.llh4github.jimmerhelper.core.common.inputDtoPkgName
-import com.github.llh4github.jimmerhelper.core.common.inputDtoSuffix
-import com.github.llh4github.jimmerhelper.core.common.logger
+import com.github.llh4github.jimmerhelper.ksp.common.OptionKey
+import com.github.llh4github.jimmerhelper.ksp.common.inputDtoPkgName
+import com.github.llh4github.jimmerhelper.ksp.common.inputDtoSuffix
+import com.github.llh4github.jimmerhelper.ksp.common.logger
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider

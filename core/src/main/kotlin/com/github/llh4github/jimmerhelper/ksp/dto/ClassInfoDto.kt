@@ -1,7 +1,7 @@
-package com.github.llh4github.jimmerhelper.core.dto
+package com.github.llh4github.jimmerhelper.ksp.dto
 
-import com.github.llh4github.jimmerhelper.core.common.inputDtoPkgName
-import com.github.llh4github.jimmerhelper.core.common.inputDtoSuffix
+import com.github.llh4github.jimmerhelper.ksp.common.inputDtoPkgName
+import com.github.llh4github.jimmerhelper.ksp.common.inputDtoSuffix
 
 /**
  *

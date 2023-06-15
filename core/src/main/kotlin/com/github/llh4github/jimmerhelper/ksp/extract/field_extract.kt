@@ -1,7 +1,7 @@
-package com.github.llh4github.jimmerhelper.core.extract
+package com.github.llh4github.jimmerhelper.ksp.extract
 
-import com.github.llh4github.jimmerhelper.core.common.*
-import com.github.llh4github.jimmerhelper.core.dto.FieldInfoDto
+import com.github.llh4github.jimmerhelper.ksp.common.*
+import com.github.llh4github.jimmerhelper.ksp.dto.FieldInfoDto
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.KSTypeArgument
 

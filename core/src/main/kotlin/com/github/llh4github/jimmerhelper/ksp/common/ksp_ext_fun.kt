@@ -1,4 +1,4 @@
-package com.github.llh4github.jimmerhelper.core.common
+package com.github.llh4github.jimmerhelper.ksp.common
 
 import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSTypeArgument

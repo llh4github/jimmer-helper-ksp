@@ -1,11 +1,11 @@
-package com.github.llh4github.jimmerhelper.core
+package com.github.llh4github.jimmerhelper.ksp
 
 import com.facebook.ktfmt.format.Formatter
 import com.facebook.ktfmt.format.FormattingOptions
-import com.github.llh4github.jimmerhelper.core.common.logger
-import com.github.llh4github.jimmerhelper.core.extract.extractClassInfo
-import com.github.llh4github.jimmerhelper.core.generator.InputClassGen
-import com.github.llh4github.jimmerhelper.core.generator.SuperInterfaceGen
+import com.github.llh4github.jimmerhelper.ksp.common.logger
+import com.github.llh4github.jimmerhelper.ksp.extract.extractClassInfo
+import com.github.llh4github.jimmerhelper.ksp.generator.InputClassGen
+import com.github.llh4github.jimmerhelper.ksp.generator.SuperInterfaceGen
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver

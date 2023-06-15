@@ -1,4 +1,4 @@
-package com.github.llh4github.jimmerhelper.core.common
+package com.github.llh4github.jimmerhelper.ksp.common
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.MemberName
