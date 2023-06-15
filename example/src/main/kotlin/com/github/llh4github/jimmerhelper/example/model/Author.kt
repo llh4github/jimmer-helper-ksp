@@ -1,4 +1,4 @@
-package com.github.llh4github.jimmerhelper.example
+package com.github.llh4github.jimmerhelper.example.model
 
 import org.babyfish.jimmer.Formula
 import org.babyfish.jimmer.sql.Entity

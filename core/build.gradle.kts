@@ -7,10 +7,12 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation(libs.kotlinpoet)
-    implementation(libs.kotlinpoet.ksp)
+    api(libs.kotlinpoet)
+    api(libs.kotlinpoet.ksp)
 
-    implementation(libs.ktfmt)
+    api(libs.ktfmt)
+    implementation(libs.ktlint.rule.engine.core)
+    implementation(libs.ktlint.rule.engine)
     implementation(libs.googleKsp)
     implementation(libs.jimmer.sql)
     implementation(libs.jimmer.kotlin)

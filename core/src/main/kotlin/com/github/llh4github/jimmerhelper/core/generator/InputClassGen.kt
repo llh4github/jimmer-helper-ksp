@@ -2,6 +2,7 @@ package com.github.llh4github.jimmerhelper.core.generator
 
 import com.github.llh4github.jimmerhelper.core.common.JimmerMember
 import com.github.llh4github.jimmerhelper.core.common.SUPER_CLASS_MAP
+import com.github.llh4github.jimmerhelper.core.common.logger
 import com.github.llh4github.jimmerhelper.core.dto.ClassInfoDto
 import com.github.llh4github.jimmerhelper.core.dto.FieldInfoDto
 import com.squareup.kotlinpoet.*
@@ -15,8 +16,11 @@ class InputClassGen(private val dto: ClassInfoDto) {
         val tuple = constructorFun(dto)
         val builder = FileSpec.builder(dto.inputDtoPkg, dto.inputDtoClassName)
             .addImport(dto.packageName, dto.className)
-        builder.addImport(dto.packageName, needImportJimmerExtFun(dto))
-
+        // 导入自身包的by方法
+        builder.addImport(dto.packageName, "by")
+        needImportJimmerExtFun2(dto).forEach {
+            builder.addImport(it._1, it._2)
+        }
 
         return builder
             .addType(
@@ -86,6 +90,18 @@ class InputClassGen(private val dto: ClassInfoDto) {
             return listOf("by")
         }
         return listOf("by", "addBy")
+    }
+
+    private fun needImportJimmerExtFun2(dto: ClassInfoDto): List<Tuple2<String, String>> {
+        return dto.fields.filter { it.isRelationField }
+            .map {
+                logger.info("${it.typePackage} ${it.name}")
+                if (!it.isList) {
+                    Tuple2(it.typePackage, "by")
+                } else {
+                    Tuple2(it.typeParamPkgStr, "addBy")
+                }
+            }.toList()
 
     }
 
