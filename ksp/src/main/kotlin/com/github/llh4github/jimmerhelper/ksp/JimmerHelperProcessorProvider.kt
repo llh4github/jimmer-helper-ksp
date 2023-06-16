@@ -13,7 +13,7 @@ import com.google.devtools.ksp.processing.SymbolProcessorProvider
  * Created At 2023/6/6 17:05
  * @author llh
  */
-class InputDtoProcessorProvider : SymbolProcessorProvider {
+class JimmerHelperProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
         logger = environment.logger
         inputDtoSuffix = environment.options.getOrDefault(OptionKey.inputDtoSuffixKey, "Input")
@@ -23,6 +23,6 @@ class InputDtoProcessorProvider : SymbolProcessorProvider {
             logger.info("Hello $it, This is Jimmer-Helper-KSP.")
         }
         logger.info("生成 inputDto 对象插件运行成功")
-        return InputDtoProcessor(environment.codeGenerator)
+        return JimmerHelperProcessor(environment.codeGenerator)
     }
 }

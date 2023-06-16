@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * Created At 2023/6/6 17:06
  * @author llh
  */
-class InputDtoProcessor(private val codeGenerator: CodeGenerator) : SymbolProcessor {
+class JimmerHelperProcessor(private val codeGenerator: CodeGenerator) : SymbolProcessor {
     private val processed = AtomicBoolean()
     override fun process(resolver: Resolver): List<KSAnnotated> {
         if (!processed.compareAndSet(false, true)) {
