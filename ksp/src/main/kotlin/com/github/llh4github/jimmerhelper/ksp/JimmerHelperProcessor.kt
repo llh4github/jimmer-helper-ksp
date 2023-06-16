@@ -1,11 +1,13 @@
-package com.github.llh4github.jimmerhelper.core
+package com.github.llh4github.jimmerhelper.ksp
 
 import com.facebook.ktfmt.format.Formatter
 import com.facebook.ktfmt.format.FormattingOptions
-import com.github.llh4github.jimmerhelper.core.common.logger
-import com.github.llh4github.jimmerhelper.core.extract.extractClassInfo
-import com.github.llh4github.jimmerhelper.core.generator.InputClassGen
-import com.github.llh4github.jimmerhelper.core.generator.SuperInterfaceGen
+import com.github.llh4github.jimmerhelper.ksp.common.logger
+import com.github.llh4github.jimmerhelper.ksp.extract.extractJimmerModelInfo
+import com.github.llh4github.jimmerhelper.ksp.extract.extractMyAnnoClassInfo
+import com.github.llh4github.jimmerhelper.ksp.generator.InputClassGen
+import com.github.llh4github.jimmerhelper.ksp.generator.SuperInterfaceGen
+import com.github.llh4github.jimmerhelper.ksp.generator.toJimmerEntityExtFunGen
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver
@@ -19,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * Created At 2023/6/6 17:06
  * @author llh
  */
-class InputDtoProcessor(private val codeGenerator: CodeGenerator) : SymbolProcessor {
+class JimmerHelperProcessor(private val codeGenerator: CodeGenerator) : SymbolProcessor {
     private val processed = AtomicBoolean()
     override fun process(resolver: Resolver): List<KSAnnotated> {
         if (!processed.compareAndSet(false, true)) {
@@ -28,7 +30,11 @@ class InputDtoProcessor(private val codeGenerator: CodeGenerator) : SymbolProces
         logger.info("process start")
         val files = resolver.getAllFiles()
 
-        extractClassInfo(files)
+        extractMyAnnoClassInfo(files)
+            .forEach {
+                toJimmerEntityExtFunGen(it)
+            }
+        extractJimmerModelInfo(files)
             .map {
                 if (it.isSupperClass) SuperInterfaceGen(it).build()
                 else InputClassGen(it).build()

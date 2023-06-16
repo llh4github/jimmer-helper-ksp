@@ -7,14 +7,6 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation(libs.kotlinpoet)
-    implementation(libs.kotlinpoet.ksp)
-
-    implementation(libs.ktfmt)
-    implementation(libs.googleKsp)
-    implementation(libs.jimmer.sql)
-    implementation(libs.jimmer.kotlin)
-    implementation(libs.jimmer.ksp)
     testImplementation(kotlin("test"))
 }
 

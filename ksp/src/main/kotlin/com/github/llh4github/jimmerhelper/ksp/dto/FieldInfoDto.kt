@@ -1,7 +1,7 @@
-package com.github.llh4github.jimmerhelper.core.dto
+package com.github.llh4github.jimmerhelper.ksp.dto
 
-import com.github.llh4github.jimmerhelper.core.common.inputDtoPkgName
-import com.github.llh4github.jimmerhelper.core.common.inputDtoSuffix
+import com.github.llh4github.jimmerhelper.ksp.common.inputDtoPkgName
+import com.github.llh4github.jimmerhelper.ksp.common.inputDtoSuffix
 import com.squareup.kotlinpoet.ClassName
 
 /**
@@ -26,6 +26,11 @@ data class FieldInfoDto(
      */
     val typeName: String,
 
+
+    /**
+     * 此字段是否为可空类型
+     */
+    val nullable: Boolean = false,
 
     val complexTypeStr: String? = null,
 

@@ -1,10 +1,10 @@
-package com.github.llh4github.jimmerhelper.core.generator
+package com.github.llh4github.jimmerhelper.ksp.generator
 
-import com.github.llh4github.jimmerhelper.core.common.JimmerMember
-import com.github.llh4github.jimmerhelper.core.common.SUPER_CLASS_MAP
-import com.github.llh4github.jimmerhelper.core.common.logger
-import com.github.llh4github.jimmerhelper.core.dto.ClassInfoDto
-import com.github.llh4github.jimmerhelper.core.dto.FieldInfoDto
+import com.github.llh4github.jimmerhelper.ksp.common.JimmerMember
+import com.github.llh4github.jimmerhelper.ksp.common.SUPER_CLASS_MAP
+import com.github.llh4github.jimmerhelper.ksp.common.logger
+import com.github.llh4github.jimmerhelper.ksp.dto.ClassInfoDto
+import com.github.llh4github.jimmerhelper.ksp.dto.FieldInfoDto
 import com.squareup.kotlinpoet.*
 import javaslang.Tuple2
 

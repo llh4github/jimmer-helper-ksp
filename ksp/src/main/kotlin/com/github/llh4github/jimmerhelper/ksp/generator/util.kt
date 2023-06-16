@@ -1,11 +1,11 @@
-package com.github.llh4github.jimmerhelper.core.generator
+package com.github.llh4github.jimmerhelper.ksp.generator
 
-import com.github.llh4github.jimmerhelper.core.common.JimmerMember
-import com.github.llh4github.jimmerhelper.core.common.SUPER_CLASS_MAP
-import com.github.llh4github.jimmerhelper.core.common.inputDtoPkgName
-import com.github.llh4github.jimmerhelper.core.common.inputDtoSuffix
-import com.github.llh4github.jimmerhelper.core.dto.ClassInfoDto
-import com.github.llh4github.jimmerhelper.core.dto.FieldInfoDto
+import com.github.llh4github.jimmerhelper.ksp.common.JimmerMember
+import com.github.llh4github.jimmerhelper.ksp.common.SUPER_CLASS_MAP
+import com.github.llh4github.jimmerhelper.ksp.common.inputDtoPkgName
+import com.github.llh4github.jimmerhelper.ksp.common.inputDtoSuffix
+import com.github.llh4github.jimmerhelper.ksp.dto.ClassInfoDto
+import com.github.llh4github.jimmerhelper.ksp.dto.FieldInfoDto
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 
