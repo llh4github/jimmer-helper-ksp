@@ -2,6 +2,7 @@ package com.github.llh4github.jimmerhelper.ksp.dto
 
 import com.github.llh4github.jimmerhelper.ksp.common.inputDtoPkgName
 import com.github.llh4github.jimmerhelper.ksp.common.inputDtoSuffix
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 
 /**
  *
@@ -19,10 +20,13 @@ data class ClassInfoDto(
      */
     val packageName: String,
     /**
+     * KSP解析出的类定义信息
+     */
+    val classDeclaration: KSClassDeclaration,
+    /**
      * 类注释
      */
     val doc: String? = null,
-
     /**
      * 是否是被[org.babyfish.jimmer.sql.MappedSuperclass]注解修饰的类
      */

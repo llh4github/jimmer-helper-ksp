@@ -4,8 +4,10 @@ import com.facebook.ktfmt.format.Formatter
 import com.facebook.ktfmt.format.FormattingOptions
 import com.github.llh4github.jimmerhelper.ksp.common.logger
 import com.github.llh4github.jimmerhelper.ksp.extract.extractJimmerModelInfo
+import com.github.llh4github.jimmerhelper.ksp.extract.extractMyAnnoClassInfo
 import com.github.llh4github.jimmerhelper.ksp.generator.InputClassGen
 import com.github.llh4github.jimmerhelper.ksp.generator.SuperInterfaceGen
+import com.github.llh4github.jimmerhelper.ksp.generator.toJimmerEntityExtFunGen
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver
@@ -28,6 +30,10 @@ class JimmerHelperProcessor(private val codeGenerator: CodeGenerator) : SymbolPr
         logger.info("process start")
         val files = resolver.getAllFiles()
 
+        extractMyAnnoClassInfo(files)
+            .forEach {
+                toJimmerEntityExtFunGen(it)
+            }
         extractJimmerModelInfo(files)
             .map {
                 if (it.isSupperClass) SuperInterfaceGen(it).build()

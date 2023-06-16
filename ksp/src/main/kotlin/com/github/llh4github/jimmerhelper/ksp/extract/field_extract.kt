@@ -4,6 +4,7 @@ import com.github.llh4github.jimmerhelper.ksp.common.*
 import com.github.llh4github.jimmerhelper.ksp.dto.FieldInfoDto
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.KSTypeArgument
+import com.google.devtools.ksp.symbol.Nullability
 
 /**
  * 提取字段信息
@@ -24,6 +25,7 @@ private fun extractFieldInfo(property: KSPropertyDeclaration): FieldInfoDto {
     val tyName = property.type.resolve().declaration.simpleName.asString()
     val typePackage = property.type.resolve().declaration.packageName.asString()
     val isRelation = property.annotations.hasAnyAnno(relationAnnoList)
+
     var isList = false
     var arg: KSTypeArgument? = null
     var isIdViewListFlag = false
@@ -39,6 +41,7 @@ private fun extractFieldInfo(property: KSPropertyDeclaration): FieldInfoDto {
 //        complexTypeStr = complexTypeStr,
         isJimmerKey = property.annotations.hasAnno(JimmerAnno.key),
         doc = doc,
+        nullable = property.type.resolve().nullability == Nullability.NULLABLE,
         isRelationField = isRelation,
         isList = isList,
         typeParamPkgStr = arg?.typePkg(),

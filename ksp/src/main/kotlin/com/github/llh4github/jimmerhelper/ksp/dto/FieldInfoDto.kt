@@ -27,6 +27,11 @@ data class FieldInfoDto(
     val typeName: String,
 
 
+    /**
+     * 此字段是否为可空类型
+     */
+    val nullable: Boolean = false,
+
     val complexTypeStr: String? = null,
 
     /**

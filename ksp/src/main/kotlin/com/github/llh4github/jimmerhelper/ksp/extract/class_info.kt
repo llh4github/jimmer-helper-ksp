@@ -40,6 +40,7 @@ private fun extractClassInfo(classDeclaration: KSClassDeclaration): ClassInfoDto
     return ClassInfoDto(
         packageName = classDeclaration.packageName.asString(),
         className = classDeclaration.className().simpleName,
+        classDeclaration = classDeclaration,
         doc = classDeclaration.docString,
         isSupperClass = isSupperClass(classDeclaration),
         fields = fields,
