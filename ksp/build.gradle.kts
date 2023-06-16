@@ -7,6 +7,8 @@ repositories {
     mavenCentral()
 }
 dependencies {
+    implementation(project(":core"))
+
     implementation(libs.kotlinpoet)
     implementation(libs.kotlinpoet.ksp)
 

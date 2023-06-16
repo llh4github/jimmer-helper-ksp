@@ -12,7 +12,8 @@ dependencies {
     implementation(libs.jimmer.kotlin)
     implementation(libs.jimmer.sql)
     ksp(libs.jimmer.ksp)
-    ksp(project(":core"))
+    ksp(project(":ksp"))
+    implementation(project(":core"))
     testImplementation(kotlin("test"))
 }
 ksp{
