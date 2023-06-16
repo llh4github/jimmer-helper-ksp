@@ -7,7 +7,10 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
 import org.babyfish.jimmer.ksp.className
 
-fun extractClassInfo(sequence: Sequence<KSFile>): List<ClassInfoDto> {
+/**
+ * 抽取Jimmer框架的模型对象
+ */
+fun extractJimmerModelInfo(sequence: Sequence<KSFile>): List<ClassInfoDto> {
     return sequence
         .flatMap { it.declarations.filterIsInstance<KSClassDeclaration>() }
         .filter { isJimmerModelClass(it) }

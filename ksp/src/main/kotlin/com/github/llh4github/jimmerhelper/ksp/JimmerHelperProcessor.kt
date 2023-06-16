@@ -3,7 +3,7 @@ package com.github.llh4github.jimmerhelper.ksp
 import com.facebook.ktfmt.format.Formatter
 import com.facebook.ktfmt.format.FormattingOptions
 import com.github.llh4github.jimmerhelper.ksp.common.logger
-import com.github.llh4github.jimmerhelper.ksp.extract.extractClassInfo
+import com.github.llh4github.jimmerhelper.ksp.extract.extractJimmerModelInfo
 import com.github.llh4github.jimmerhelper.ksp.generator.InputClassGen
 import com.github.llh4github.jimmerhelper.ksp.generator.SuperInterfaceGen
 import com.google.devtools.ksp.processing.CodeGenerator
@@ -28,7 +28,7 @@ class JimmerHelperProcessor(private val codeGenerator: CodeGenerator) : SymbolPr
         logger.info("process start")
         val files = resolver.getAllFiles()
 
-        extractClassInfo(files)
+        extractJimmerModelInfo(files)
             .map {
                 if (it.isSupperClass) SuperInterfaceGen(it).build()
                 else InputClassGen(it).build()
