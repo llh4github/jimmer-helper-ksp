@@ -12,10 +12,11 @@ import com.github.llh4github.jimmerhelper.example.entity.Person
  */
 @ToJimmerEntity(Person::class, ignoreFields = ["a", "b", "c"])
 data class PersonAddDto(
+    override val id: Int,
     val name: String,
     val age: Int?,
     @ToJimmerEntityField(ignore = true, rename = "another")
     val other: String,
-)
+) : BaseDto
 
 

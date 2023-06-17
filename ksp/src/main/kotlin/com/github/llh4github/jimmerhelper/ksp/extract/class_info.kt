@@ -11,7 +11,7 @@ import org.babyfish.jimmer.ksp.className
 /**
  * 抽取Jimmer框架的模型对象
  */
-fun extractJimmerModelInfo(sequence: Sequence<KSFile>): List<ClassInfoDto> {
+fun extractJimmerEntityInfo(sequence: Sequence<KSFile>): List<ClassInfoDto> {
     return sequence
         .flatMap { it.declarations.filterIsInstance<KSClassDeclaration>() }
         .filter { isJimmerModelClass(it) }
