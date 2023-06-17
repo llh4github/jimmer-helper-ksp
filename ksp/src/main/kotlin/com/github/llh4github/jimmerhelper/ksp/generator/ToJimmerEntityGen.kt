@@ -2,6 +2,7 @@ package com.github.llh4github.jimmerhelper.ksp.generator
 
 import com.github.llh4github.jimmerhelper.ToJimmerEntity
 import com.github.llh4github.jimmerhelper.ToJimmerEntityField
+import com.github.llh4github.jimmerhelper.ksp.common.JimmerMember
 import com.github.llh4github.jimmerhelper.ksp.common.logger
 import com.github.llh4github.jimmerhelper.ksp.dto.ClassInfoDto
 import com.github.llh4github.jimmerhelper.ksp.dto.ConvertExtFunAnnoInfo
@@ -21,6 +22,7 @@ import org.babyfish.jimmer.ksp.name
 private val fileBuilderMap: MutableMap<String, FileSpec.Builder> = mutableMapOf()
 fun toJimmerEntityExtFunGen(pojoList: List<ClassInfoDto>, jimmerEntities: List<ClassInfoDto>): List<FileSpec> {
     pojoList.forEach {
+        logger.info("ccc ${it.className}")
         toJimmerEntityExtFunGen(it, jimmerEntities)
     }
     return fileBuilderMap.values.map { it.build() }.toList()
@@ -36,26 +38,63 @@ fun toJimmerEntityExtFunGen(dto: ClassInfoDto, jimmerEntities: List<ClassInfoDto
         .takeIf { it.isNotEmpty() }?.let {
             info.renameFields.addAll(it)
         }
-    fillExtFunFile(info, jimmerEntities)
+    fillExtFunFile(info, dto, jimmerEntities)
 }
 
 
 /**
  * 按模块填充拓展函数文件内容
  */
-private fun fillExtFunFile(info: ConvertExtFunAnnoInfo, jimmerEntities: List<ClassInfoDto>) {
+private fun fillExtFunFile(
+    info: ConvertExtFunAnnoInfo,
+    classInfoDto: ClassInfoDto,
+    jimmerEntities: List<ClassInfoDto>
+) {
     val builder = fileBuilder(info.pkgName)
-    val funBuilder = FunSpec.builder("toJimmerEntity")
-    funBuilder.receiver(ClassName(info.pkgName, info.className))
+        .addImport(info.targetPkgName, "by")
+    val funName = "toJimmerEntity"
+    val funBuilder = FunSpec.builder(funName)
+        .receiver(ClassName(info.pkgName, info.className))
+        .addAnnotation(suppressWarns)
+        .returns(ClassName(info.targetPkgName, info.targetClassName))
+        .addCode("return ")
+        .addStatement("%M(%L::class).by{", JimmerMember.newFun, info.targetClassName)
+    classInfoDto.fields.forEach {
+        // 不处理处理集合类
+        if (it.isList) {
+            return
+        }
+
+        val fieldName = info.findFieldName(it.name)
+        val isIn = isFieldInTargetClass(fieldName, info.targetInfo, jimmerEntities)
+        if (!isIn) {
+            return
+        }
+        if (it.nullable) {
+            funBuilder
+                .addStatement("this@%L.%L?.let{", funName, it.name)
+                .addStatement("%L = it", fieldName)
+                .addStatement("}")
+        } else {
+            funBuilder
+                .addStatement("%L = this@%L.%L", fieldName, funName, it.name)
+        }
+    }
+
+    funBuilder.addStatement("}")
     builder.addFunction(funBuilder.build())
 }
 
 private fun fileBuilder(pkgName: String): FileSpec.Builder {
-    if (fileBuilderMap.containsKey(pkgName)) {
-        return fileBuilderMap[pkgName]!!
-    }
-    val builder = FileSpec.builder(pkgName, "to_jimmer_ext_fun")
-    fileBuilderMap[pkgName] = builder
+//    if (fileBuilderMap.containsKey(pkgName)) {
+//        return fileBuilderMap[pkgName]!!
+//    }
+    val toInt = Math.random().times(100).toInt()
+    val builder = FileSpec.builder(
+        pkgName,
+        "to_jimmer_ext_fun" + toInt
+    )
+    fileBuilderMap[pkgName + toInt] = builder
     return builder
 
 }

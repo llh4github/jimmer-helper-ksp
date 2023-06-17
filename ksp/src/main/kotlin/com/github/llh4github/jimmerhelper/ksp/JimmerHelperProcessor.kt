@@ -33,12 +33,12 @@ class JimmerHelperProcessor(private val codeGenerator: CodeGenerator) : SymbolPr
         val jimmerEntities = extractJimmerEntityInfo(files)
         toJimmerEntityExtFunGen(extractMyAnnoClassInfo(files), jimmerEntities)
             .forEach {
-                logger.info("??? ${it.name}")
                 val file = codeGenerator.createNewFile(
                     Dependencies(aggregating = false),
                     it.packageName, it.name
                 )
                 file.writer(Charsets.UTF_8).use { out ->
+                    logger.info("??? ${formatCode(it)}")
                     out.write(formatCode(it))
                 }
             }
