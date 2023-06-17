@@ -10,10 +10,7 @@ import com.github.llh4github.jimmerhelper.ksp.dto.ConvertTargetInfo
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.KSType
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.asClassName
+import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.toTypeName
 import org.babyfish.jimmer.ksp.annotation
 import org.babyfish.jimmer.ksp.annotations
@@ -56,8 +53,7 @@ private fun fillExtFunFile(
     val funBuilder = FunSpec.builder(funName)
         .receiver(ClassName(info.pkgName, info.className))
         .addAnnotation(suppressWarns)
-        .returns(ClassName(info.targetPkgName, info.targetClassName))
-        .addCode("return ")
+    val returnBody = CodeBlock.builder()
         .addStatement("%M(%L::class).by{", JimmerMember.newFun, info.targetClassName)
     classInfoDto.fields.forEach {
         // 不处理处理集合类
@@ -71,30 +67,36 @@ private fun fillExtFunFile(
             return
         }
         if (it.nullable) {
-            funBuilder
+//            funBuilder
+            returnBody
                 .addStatement("this@%L.%L?.let{", funName, it.name)
                 .addStatement("%L = it", fieldName)
                 .addStatement("}")
         } else {
-            funBuilder
+//            funBuilder
+            returnBody
                 .addStatement("%L = this@%L.%L", fieldName, funName, it.name)
         }
     }
 
-    funBuilder.addStatement("}")
+    returnBody.addStatement("}")
+    funBuilder
+        .addStatement("val rs = ")
+        .addCode(returnBody.build())
+        .addStatement("return rs")
+        .returns(ClassName(info.targetPkgName, info.targetClassName))
     builder.addFunction(funBuilder.build())
 }
 
 private fun fileBuilder(pkgName: String): FileSpec.Builder {
-//    if (fileBuilderMap.containsKey(pkgName)) {
-//        return fileBuilderMap[pkgName]!!
-//    }
-    val toInt = Math.random().times(100).toInt()
+    if (fileBuilderMap.containsKey(pkgName)) {
+        return fileBuilderMap[pkgName]!!
+    }
+//    val toInt = Math.random().times(100).toInt()
     val builder = FileSpec.builder(
-        pkgName,
-        "to_jimmer_ext_fun" + toInt
+        pkgName, "to_jimmer_ext_fun"
     )
-    fileBuilderMap[pkgName + toInt] = builder
+    fileBuilderMap[pkgName] = builder
     return builder
 
 }
@@ -144,9 +146,12 @@ private fun parseRenameFields(properties: Sequence<KSPropertyDeclaration>): List
             annoClassName == ToJimmerEntityField::class.asClassName()
         }.map { ele ->
             val ignore = ele.arguments[0].value as Boolean
-            val rename = ele.arguments[1].value as String
-            logger.info("ccc $rename")
-            Pair(it.name, rename)
+            if (!ignore) {
+                val rename = ele.arguments[1].value as String
+                Pair(it.name, rename)
+            } else {
+                null
+            }
         }.firstOrNull()
     }
         .filter { it != null }
@@ -160,7 +165,7 @@ private fun parseIgnoreFields(properties: Sequence<KSPropertyDeclaration>): List
             val annoClassName = ele.annotationType.toTypeName()
             annoClassName == ToJimmerEntityField::class.asClassName()
         }.map { ele ->
-            ele.arguments[0].value as Boolean
+            !(ele.arguments[0].value as Boolean)
         }.any()
     }
         .map { it.name }
