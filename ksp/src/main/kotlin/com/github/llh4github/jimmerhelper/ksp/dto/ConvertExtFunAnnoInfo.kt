@@ -11,6 +11,8 @@ data class ConvertExtFunAnnoInfo(
      * 要转换为的Jimmer实体类名
      */
     val className: String,
+
+    val targetInfo: ConvertTargetInfo,
     /**
      * 不需要转换的字段列表
      */
@@ -26,3 +28,15 @@ data class ConvertExtFunAnnoInfo(
         ignoreField.addAll(list)
     }
 }
+
+data class ConvertTargetInfo(
+    /**
+     * 转换目标类的名称
+     */
+    val name: String,
+    /**
+     * 转换目标类的包名
+     */
+    val pkgName: String,
+
+    )

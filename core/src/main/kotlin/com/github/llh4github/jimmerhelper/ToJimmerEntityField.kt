@@ -8,4 +8,7 @@ package com.github.llh4github.jimmerhelper
  */
 @Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.SOURCE)
-annotation class ToJimmerEntityIgnore()
+annotation class ToJimmerEntityField(
+    val ignore: Boolean = false,
+    val rename: String = "",
+)
