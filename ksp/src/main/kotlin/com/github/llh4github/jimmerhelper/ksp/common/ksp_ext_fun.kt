@@ -2,6 +2,7 @@ package com.github.llh4github.jimmerhelper.ksp.common
 
 import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSTypeArgument
+import com.google.devtools.ksp.symbol.KSValueArgument
 import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.ksp.toTypeName
 import kotlin.reflect.KClass
@@ -22,6 +23,12 @@ fun Sequence<KSAnnotation>.hasAnyAnno(annos: List<KClass<out Annotation>>): Bool
 
 fun Sequence<KSAnnotation>.notHasAnno(anno: KClass<out Annotation>): Boolean {
     return !hasAnno(anno)
+}
+
+fun List<KSValueArgument>.getValue(key: String): Any? {
+    return this.filter { key == it.name?.asString() }
+        .map { it.value }
+        .first()
 }
 
 fun KSTypeArgument.qualifiedNameStr(): String {
