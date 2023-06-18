@@ -25,12 +25,10 @@ fun toJimmerEntityExtFunGen(pojoList: List<ClassInfoDto>, jimmerEntities: List<C
 
 fun toJimmerEntityExtFunGen(dto: ClassInfoDto, jimmerEntities: List<ClassInfoDto>) {
     val info = parseConvertExtFunAnnoArguments(dto.classDeclaration) ?: return
-    logger.info("忽略1？？？？ ${info.ignoreFields}")
     parseIgnoreFields(dto.classDeclaration.getAllProperties())
         .takeIf { it.isNotEmpty() }?.let {
             info.addIgnoreField(it)
         }
-    logger.info("忽略2？？？？ ${info.ignoreFields}")
     parseRenameFields(dto.classDeclaration.getAllProperties())
         .takeIf { it.isNotEmpty() }?.let {
             info.renameFields.addAll(it)
@@ -55,6 +53,9 @@ private fun fillExtFunFile(
         .addAnnotation(suppressWarns)
     val returnBody = CodeBlock.builder()
         .addStatement("%M(%L::class).by{", JimmerMember.newFun, info.targetClassName)
+    val comment = CodeBlock.builder()
+        .addStatement("此拓展方法由插件生成。根据提供的字段名转换为Jimmer数据库模型类实例。\n")
+        .addStatement(" 已经转换字段的有： \n")
     classInfoDto.fields
         .filter { !it.isList }
         .filter {
@@ -76,12 +77,13 @@ private fun fillExtFunFile(
                     returnBody
                         .addStatement("%L = this@%L.%L", fieldName, funName, it.name)
                 }
-
+                comment.addStatement("- %L -> %L \n", it.name, fieldName)
             }
         }
 
     returnBody.addStatement("}")
     funBuilder
+        .addKdoc(comment.build())
         .addStatement("val rs = ")
         .addCode(returnBody.build())
         .addStatement("return rs")
