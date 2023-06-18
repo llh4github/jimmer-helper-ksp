@@ -38,7 +38,6 @@ class JimmerHelperProcessor(private val codeGenerator: CodeGenerator) : SymbolPr
                     it.packageName, it.name
                 )
                 file.writer(Charsets.UTF_8).use { out ->
-                    logger.info("??? ${formatCode(it)}")
                     out.write(formatCode(it))
                 }
             }

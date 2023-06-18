@@ -1,6 +1,7 @@
 package com.github.llh4github.jimmerhelper.example.dto
 
 import com.github.llh4github.jimmerhelper.ToJimmerEntity
+import com.github.llh4github.jimmerhelper.ToJimmerEntityField
 import com.github.llh4github.jimmerhelper.example.entity.Pet
 
 /**
@@ -11,5 +12,18 @@ import com.github.llh4github.jimmerhelper.example.entity.Pet
  */
 @ToJimmerEntity(Pet::class)
 data class PetAddDto(
-    val name: String
+    val id: Long?,
+
+    @ToJimmerEntityField(rename = "name")
+    val petName: String,
+
+)
+
+@ToJimmerEntity(Pet::class)
+data class PetUpdateDto(
+    @ToJimmerEntityField(ignore = true)
+    val id: Long?,
+    val age: Int,
+    @ToJimmerEntityField(rename = "name")
+    val petName: String,
 )

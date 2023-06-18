@@ -2,8 +2,7 @@ package com.github.llh4github.jimmerhelper.ksp.generator
 
 import com.github.llh4github.jimmerhelper.ToJimmerEntity
 import com.github.llh4github.jimmerhelper.ToJimmerEntityField
-import com.github.llh4github.jimmerhelper.ksp.common.JimmerMember
-import com.github.llh4github.jimmerhelper.ksp.common.logger
+import com.github.llh4github.jimmerhelper.ksp.common.*
 import com.github.llh4github.jimmerhelper.ksp.dto.ClassInfoDto
 import com.github.llh4github.jimmerhelper.ksp.dto.ConvertExtFunAnnoInfo
 import com.github.llh4github.jimmerhelper.ksp.dto.ConvertTargetInfo
@@ -19,7 +18,6 @@ import org.babyfish.jimmer.ksp.name
 private val fileBuilderMap: MutableMap<String, FileSpec.Builder> = mutableMapOf()
 fun toJimmerEntityExtFunGen(pojoList: List<ClassInfoDto>, jimmerEntities: List<ClassInfoDto>): List<FileSpec> {
     pojoList.forEach {
-        logger.info("ccc ${it.className}")
         toJimmerEntityExtFunGen(it, jimmerEntities)
     }
     return fileBuilderMap.values.map { it.build() }.toList()
@@ -27,10 +25,12 @@ fun toJimmerEntityExtFunGen(pojoList: List<ClassInfoDto>, jimmerEntities: List<C
 
 fun toJimmerEntityExtFunGen(dto: ClassInfoDto, jimmerEntities: List<ClassInfoDto>) {
     val info = parseConvertExtFunAnnoArguments(dto.classDeclaration) ?: return
+    logger.info("忽略1？？？？ ${info.ignoreFields}")
     parseIgnoreFields(dto.classDeclaration.getAllProperties())
         .takeIf { it.isNotEmpty() }?.let {
             info.addIgnoreField(it)
         }
+    logger.info("忽略2？？？？ ${info.ignoreFields}")
     parseRenameFields(dto.classDeclaration.getAllProperties())
         .takeIf { it.isNotEmpty() }?.let {
             info.renameFields.addAll(it)
@@ -55,29 +55,30 @@ private fun fillExtFunFile(
         .addAnnotation(suppressWarns)
     val returnBody = CodeBlock.builder()
         .addStatement("%M(%L::class).by{", JimmerMember.newFun, info.targetClassName)
-    classInfoDto.fields.forEach {
-        // 不处理处理集合类
-        if (it.isList) {
-            return
+    classInfoDto.fields
+        .filter { !it.isList }
+        .filter {
+//            logger.info("${it.name}需要忽略？ ${!info.ignoreFields.contains(it.name)}")
+            !info.ignoreFields.contains(it.name)
         }
+        .forEach {
+            val fieldName = info.findFieldName(it.name)
+            logger.info("${it.name} -> $fieldName")
+            val isIn = isFieldInTargetClass(fieldName, info.targetInfo, jimmerEntities)
 
-        val fieldName = info.findFieldName(it.name)
-        val isIn = isFieldInTargetClass(fieldName, info.targetInfo, jimmerEntities)
-        if (!isIn) {
-            return
+            if (isIn) {
+                if (it.nullable) {
+                    returnBody
+                        .addStatement("this@%L.%L?.let{", funName, it.name)
+                        .addStatement("%L = it", fieldName)
+                        .addStatement("}")
+                } else {
+                    returnBody
+                        .addStatement("%L = this@%L.%L", fieldName, funName, it.name)
+                }
+
+            }
         }
-        if (it.nullable) {
-//            funBuilder
-            returnBody
-                .addStatement("this@%L.%L?.let{", funName, it.name)
-                .addStatement("%L = it", fieldName)
-                .addStatement("}")
-        } else {
-//            funBuilder
-            returnBody
-                .addStatement("%L = this@%L.%L", fieldName, funName, it.name)
-        }
-    }
 
     returnBody.addStatement("}")
     funBuilder
@@ -92,7 +93,6 @@ private fun fileBuilder(pkgName: String): FileSpec.Builder {
     if (fileBuilderMap.containsKey(pkgName)) {
         return fileBuilderMap[pkgName]!!
     }
-//    val toInt = Math.random().times(100).toInt()
     val builder = FileSpec.builder(
         pkgName, "to_jimmer_ext_fun"
     )
@@ -122,13 +122,13 @@ private fun parseConvertExtFunAnnoArguments(
     classDeclaration: KSClassDeclaration
 ): ConvertExtFunAnnoInfo? {
     val anno = classDeclaration.annotation(ToJimmerEntity::class) ?: return null
-    val kclass = anno.arguments[0].value as KSType
+    val kclass = anno.arguments.getValue(ToJimmerEntityProperties.jimmerEntity) as KSType
     val targetInfo = ConvertTargetInfo(
         kclass.declaration.simpleName.asString(),
         kclass.declaration.packageName.asString(),
     )
 
-    val b = anno.arguments[1].value as List<*>
+    val b = anno.arguments.getValue(ToJimmerEntityProperties.ignoreFields) as List<*>
     val info = ConvertExtFunAnnoInfo(
         classDeclaration.simpleName.asString(),
         classDeclaration.packageName.asString(),
@@ -145,9 +145,9 @@ private fun parseRenameFields(properties: Sequence<KSPropertyDeclaration>): List
             val annoClassName = ele.annotationType.toTypeName()
             annoClassName == ToJimmerEntityField::class.asClassName()
         }.map { ele ->
-            val ignore = ele.arguments[0].value as Boolean
+            val ignore = ele.arguments.getValue(ToJimmerEntityFieldProperties.ignore) as Boolean
             if (!ignore) {
-                val rename = ele.arguments[1].value as String
+                val rename = ele.arguments.getValue(ToJimmerEntityFieldProperties.rename) as String
                 Pair(it.name, rename)
             } else {
                 null
@@ -165,8 +165,9 @@ private fun parseIgnoreFields(properties: Sequence<KSPropertyDeclaration>): List
             val annoClassName = ele.annotationType.toTypeName()
             annoClassName == ToJimmerEntityField::class.asClassName()
         }.map { ele ->
-            !(ele.arguments[0].value as Boolean)
-        }.any()
+//            logger.info("字段 ${it.name} 是否要忽略： ${ele.arguments.getValue(ToJimmerEntityFieldProperties.ignore)} ")
+            (ele.arguments.getValue(ToJimmerEntityFieldProperties.ignore) as Boolean)
+        }.firstOrNull() ?: false
     }
         .map { it.name }
         .toList()
