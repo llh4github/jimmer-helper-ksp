@@ -15,7 +15,7 @@ data class ConvertExtFunAnnoInfo(
     /**
      * 被标记类的包名
      */
-    val pkgName:String,
+    val pkgName: String,
 
     val targetInfo: ConvertTargetInfo,
     /**
@@ -31,6 +31,15 @@ data class ConvertExtFunAnnoInfo(
 ) {
     val targetClassName = targetInfo.name
     val targetPkgName = targetInfo.pkgName
+
+
+    /**
+     * Jimmer框架的Draft对象
+     */
+    val draftClass = "${targetClassName}Draft"
+
+    val draftBuilderClass = "${draftClass}.MapStruct"
+
     fun addIgnoreField(field: String) {
         ignoreFields.add(field)
     }

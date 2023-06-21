@@ -50,4 +50,11 @@ data class ClassInfoDto(
      */
     val inputDtoPkg = "${packageName}.$inputDtoPkgName"
 
+    /**
+     * Jimmer框架的Draft对象
+     */
+    val draftClass = "${className}Draft"
+
+    val draftBuilderClass = "${draftClass}.MapStruct"
+
 }

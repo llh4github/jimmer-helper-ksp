@@ -47,15 +47,24 @@ private fun fillExtFunFile(
 ) {
     val builder = fileBuilder(info.pkgName)
         .addImport(info.targetPkgName, "by")
-    val funName = "toJimmerEntity"
-    val funBuilder = FunSpec.builder(funName)
+    val toEntityFun = "toJimmerEntity"
+    val toEntityBuilderFun = "toJimmerEntityBuilder"
+    val draftClass = ClassName(info.targetPkgName, info.draftClass, JIMMER_BUILDER_INNER_CLASS)
+    val entityBuilderFunBuilder = FunSpec.builder(toEntityBuilderFun)
         .receiver(ClassName(info.pkgName, info.className))
         .addAnnotation(suppressWarns)
-    val returnBody = CodeBlock.builder()
+        .returns(draftClass)
+
+    val toEntityFunBuilder = FunSpec.builder(toEntityFun)
+        .receiver(ClassName(info.pkgName, info.className))
+        .addAnnotation(suppressWarns)
+    val entityFunReturn = CodeBlock.builder()
         .addStatement("%M(%L::class).by{", JimmerMember.newFun, info.targetClassName)
     val comment = CodeBlock.builder()
         .addStatement("此拓展方法由插件生成。根据提供的字段名转换为Jimmer数据库模型类实例。\n")
         .addStatement(" 已经转换字段的有： \n")
+    val entityBuilderFunReturn = CodeBlock.builder()
+        .addStatement("val rs = %L()", info.draftBuilderClass)
     classInfoDto.fields
         .filter { !it.isList }
         .filter {
@@ -69,26 +78,39 @@ private fun fillExtFunFile(
 
             if (isIn) {
                 if (it.nullable) {
-                    returnBody
-                        .addStatement("this@%L.%L?.let{", funName, it.name)
+                    entityFunReturn
+                        .addStatement("this@%L.%L?.let{", toEntityFun, it.name)
                         .addStatement("%L = it", fieldName)
                         .addStatement("}")
+                    entityBuilderFunReturn
+                        .addStatement("this@%L.%L?.let{", toEntityBuilderFun, it.name)
+                        .addStatement("rs.%L(it)", fieldName)
+                        .addStatement("}")
                 } else {
-                    returnBody
-                        .addStatement("%L = this@%L.%L", fieldName, funName, it.name)
+                    entityFunReturn
+                        .addStatement("%L = this@%L.%L", fieldName, toEntityFun, it.name)
+
+                    entityBuilderFunReturn
+                        .addStatement("rs.%L(this@%L.%L)", fieldName, toEntityBuilderFun,it.name)
                 }
                 comment.addStatement("- %L -> %L \n", it.name, fieldName)
             }
         }
 
-    returnBody.addStatement("}")
-    funBuilder
+    entityFunReturn.addStatement("}")
+    toEntityFunBuilder
         .addKdoc(comment.build())
         .addStatement("val rs = ")
-        .addCode(returnBody.build())
+        .addCode(entityFunReturn.build())
         .addStatement("return rs")
         .returns(ClassName(info.targetPkgName, info.targetClassName))
-    builder.addFunction(funBuilder.build())
+    entityBuilderFunBuilder
+        .addKdoc(comment.build())
+        .addCode(entityBuilderFunReturn.build())
+        .addStatement("return rs")
+    builder
+        .addFunction(toEntityFunBuilder.build())
+        .addFunction(entityBuilderFunBuilder.build())
 }
 
 private fun fileBuilder(pkgName: String): FileSpec.Builder {
