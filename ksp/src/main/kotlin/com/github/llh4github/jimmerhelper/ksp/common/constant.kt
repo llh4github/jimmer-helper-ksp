@@ -100,3 +100,8 @@ object ToJimmerEntityProperties {
     const val jimmerEntity = "jimmerEntity"
     const val ignoreFields = "ignoreFields"
 }
+
+/**
+ * Jimmer框架Draft对象内构建类名
+ */
+const val JIMMER_BUILDER_INNER_CLASS = "MapStruct"
