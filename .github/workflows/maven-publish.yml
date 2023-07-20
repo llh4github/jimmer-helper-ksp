@@ -31,6 +31,7 @@ jobs:
     - name: Decode
       run: |
         echo "GPG_SECRET_KEY  ${{secrets.GPG_SECRET_KEY}}"
+        echo "GPG_PASSWORD  ${{secrets.GPG_PASSWORD}}"
         echo "${{secrets.SIGNING_SECRET_KEY_RING_FILE}}" > ~/.gradle/secring.gpg.base64
         base64 -d ~/.gradle/secring.gpg.base64 > ~/.gradle/secring.gpg
     - name: Assemble the Project
@@ -54,3 +55,4 @@ jobs:
         GPG_PASSWORD: ${{secrets.GPG_PASSWORD}}
 #        GPG_SECRET_KEY: ${{secrets.GPG_SECRET_KEY}}
         GPG_SECRET_KEY: ${{secrets.GPG_SECRET_KEY}}
+        GPG_SECRET_FILE: ${{secrets.SIGNING_SECRET_KEY_RING_FILE}}
