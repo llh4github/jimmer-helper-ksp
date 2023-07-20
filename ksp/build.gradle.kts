@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.kotlin)
 //    `java-library`
     `maven-publish`
-    id("signing")
+//    id("signing")
 }
 repositories {
 //    maven { setUrl("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/") }
@@ -81,15 +81,15 @@ publishing {
         }
     }
 }
-signing {
-    val keyId = System.getenv("GPG_KEY_ID")
-    val secretKey = System.getenv("GPG_SECRET_KEY")
-    val password = System.getenv("GPG_PASSWORD")
-
-    setRequired {
-        !project.version.toString().endsWith("SNAPSHOT")
-    }
-
-    useInMemoryPgpKeys(keyId, secretKey, password)
-    sign(publishing.publications["dist"])
-}
+//signing {
+//    val keyId = System.getenv("GPG_KEY_ID")
+//    val secretKey = System.getenv("GPG_SECRET_KEY")
+//    val password = System.getenv("GPG_PASSWORD")
+//
+//    setRequired {
+//        !project.version.toString().endsWith("SNAPSHOT")
+//    }
+//
+//    useInMemoryPgpKeys(keyId, secretKey, password)
+//    sign(publishing.publications["dist"])
+//}
