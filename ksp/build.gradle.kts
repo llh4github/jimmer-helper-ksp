@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.kotlin)
 //    `java-library`
     `maven-publish`
-//    id("signing")
+    id("signing")
 }
 repositories {
 //    maven { setUrl("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/") }
