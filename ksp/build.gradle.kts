@@ -84,13 +84,7 @@ publishing {
 signing {
     val keyId = System.getenv("GPG_KEY_ID")
     val secretKey = System.getenv("GPG_SECRET_KEY")
-    val password: String? = System.getenv("GPG_PASSWORD")
-    if (password == null) {
-        println("GPG_PASSWORD 没找到 ")
-    }
-    val pwdFile = System.getenv("SIGNING_SECRET_KEY_RING_FILE")
-    println("pwdFile  $pwdFile ")
-
+    val password = System.getenv("GPG_PASSWORD")
     setRequired {
         !project.version.toString().endsWith("SNAPSHOT")
     }
