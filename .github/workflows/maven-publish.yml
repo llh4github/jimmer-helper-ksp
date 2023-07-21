@@ -28,22 +28,17 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Decode
-      run: |
-        echo "GPG_SECRET_KEY  ${{secrets.GPG_SECRET_KEY}}"
-        echo "GPG_PASSWORD  ${{secrets.GPG_PASSWORD}}"
-        echo "${{secrets.SIGNING_SECRET_KEY_RING_FILE}}" > ~/.gradle/secring.gpg.base64
-        base64 -d ~/.gradle/secring.gpg.base64 > ~/.gradle/secring.gpg
+
     - name: Assemble the Project
       run: ./gradlew assemble
       
     - name: Publish Artifacts
       run: |
         if [[ $(cat "project.version") =~ "SNAPSHOT" ]] ; then
-          ./gradlew publishDistPublicationToSnapshotRepository -Psigning.secretKeyRingFile=$(echo ~/.gradle/secring.gpg)
+          ./gradlew publishDistPublicationToSnapshotRepository 
         else
           if [[ $GITHUB_EVENT_NAME == "release" ]] ; then
-            ./gradlew publishDistPublicationToCentralRepository -Psigning.secretKeyRingFile=$(echo ~/.gradle/secring.gpg)
+            ./gradlew publishDistPublicationToCentralRepository
           else
             echo "Skip release publication because this is not a release event"
           fi
