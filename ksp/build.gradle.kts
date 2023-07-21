@@ -64,7 +64,7 @@ publishing {
                     name = "central"
                     url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2")
                     credentials {
-                        username = System.getenv("OSSRH_USER")
+                        username = System.getenv("OSSRH_USERNAME")
                         password = System.getenv("OSSRH_PASSWORD")
                     }
                 }
@@ -72,7 +72,7 @@ publishing {
                     name = "snapshot"
                     url = uri("https://oss.sonatype.org/content/repositories/snapshots")
                     credentials {
-                        username = System.getenv("OSSRH_USER")
+                        username = System.getenv("OSSRH_USERNAME")
                         password = System.getenv("OSSRH_PASSWORD")
                     }
                 }
