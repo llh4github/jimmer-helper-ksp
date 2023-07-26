@@ -27,6 +27,9 @@ dependencies {
         implementation("org.babyfish.jimmer:jimmer-sql-kotlin:${jimmerVersion}")
         implementation("org.babyfish.jimmer:jimmer-core-kotlin:${jimmerVersion}")
         implementation("com.facebook:ktfmt:0.44")
+        implementation("com.squareup:kotlinpoet:1.12.0")
+        implementation("com.squareup:kotlinpoet-ksp:1.12.0")
+
     }
 }
 

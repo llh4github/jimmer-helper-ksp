@@ -16,7 +16,6 @@ dependencies {
     val jimmerVersion = property("version.jimmer")
 
     ksp("org.babyfish.jimmer:jimmer-ksp:${jimmerVersion}")
-    implementation("org.babyfish.jimmer:jimmer-ksp")
     implementation("org.babyfish.jimmer:jimmer-sql-kotlin")
     implementation("org.babyfish.jimmer:jimmer-core-kotlin")
 }

@@ -3,6 +3,10 @@ package io.github.llh4github.jimmer.ksp
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
+import io.github.llh4github.jimmer.ksp.common.OptionKey
+import io.github.llh4github.jimmer.ksp.common.inputDtoPkgName
+import io.github.llh4github.jimmer.ksp.common.inputDtoSuffix
+import io.github.llh4github.jimmer.ksp.common.logger
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -13,6 +17,15 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 class JimmerHelperProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-        return JimmerHelperProcessor()
+        logger = environment.logger
+        inputDtoSuffix = environment.options.getOrDefault(OptionKey.inputDtoSuffixKey, "Input")
+        inputDtoPkgName = environment.options.getOrDefault(OptionKey.inputDtoPkgNameKey, "helper")
+
+        environment.options[OptionKey.hello]?.let {
+            logger.info("Hello $it, This is Jimmer-Helper-KSP.")
+        }
+        logger.info("生成 inputDto 对象插件运行成功")
+        return JimmerHelperProcessor(environment.codeGenerator)
+
     }
 }

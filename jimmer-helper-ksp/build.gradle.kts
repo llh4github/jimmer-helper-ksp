@@ -15,7 +15,10 @@ dependencies {
     api(project(":jimmer-helper-core"))
     implementation("com.google.devtools.ksp:symbol-processing-api")
     ksp("org.babyfish.jimmer:jimmer-ksp:${jimmerVersion}")
+    implementation("org.babyfish.jimmer:jimmer-ksp")
     implementation("org.babyfish.jimmer:jimmer-sql-kotlin")
     implementation("org.babyfish.jimmer:jimmer-core-kotlin")
     implementation("com.facebook:ktfmt")
+    implementation("com.squareup:kotlinpoet")
+    implementation("com.squareup:kotlinpoet-ksp")
 }
