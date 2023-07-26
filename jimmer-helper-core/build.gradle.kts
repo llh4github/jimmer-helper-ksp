@@ -6,7 +6,5 @@
 
 plugins {
     id("io.github.llh4github.kotlin-library-conventions")
-}
-dependencies{
-
+    id("io.github.llh4github.publish")
 }

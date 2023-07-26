@@ -17,4 +17,4 @@ plugins {
 }
 
 rootProject.name = "jimmer-helper-ksp"
-include("app", "core", "ksp")
+include("example", "jimmer-helper-core", "jimmer-helper-ksp")

@@ -5,18 +5,28 @@
  */
 
 plugins {
-    id("io.github.llh4github.kotlin-library-conventions")
-    id("io.github.llh4github.publish")
+    id("io.github.llh4github.kotlin-application-conventions")
     id("com.google.devtools.ksp") version "1.8.20-1.0.11"
 }
+
 dependencies {
+    implementation(project(":jimmer-helper-core"))
+    ksp(project(":jimmer-helper-ksp"))
+
     val jimmerVersion = property("version.jimmer")
 
-    api(project(":core"))
-    implementation("com.google.devtools.ksp:symbol-processing-api")
     ksp("org.babyfish.jimmer:jimmer-ksp:${jimmerVersion}")
     implementation("org.babyfish.jimmer:jimmer-ksp")
     implementation("org.babyfish.jimmer:jimmer-sql-kotlin")
     implementation("org.babyfish.jimmer:jimmer-core-kotlin")
-    implementation("com.facebook:ktfmt")
+}
+
+application {
+    // Define the main class for the application.
+    mainClass.set("io.github.llh4github.example.AppKt")
+}
+kotlin {
+    sourceSets.main {
+        kotlin.srcDir("build/generated/ksp/main/kotlin")
+    }
 }
