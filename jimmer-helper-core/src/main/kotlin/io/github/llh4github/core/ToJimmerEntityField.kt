@@ -1,4 +1,4 @@
-package io.github.llh4github.list
+package io.github.llh4github.core
 
 /**
  * 此字段不参与转换

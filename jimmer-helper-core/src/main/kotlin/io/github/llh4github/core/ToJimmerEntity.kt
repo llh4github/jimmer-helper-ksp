@@ -1,4 +1,4 @@
-package io.github.llh4github.list
+package io.github.llh4github.core
 
 
 import kotlin.reflect.KClass

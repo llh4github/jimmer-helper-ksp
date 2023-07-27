@@ -11,7 +11,7 @@ import io.github.llh4github.jimmer.ksp.dto.ClassInfoDto
 import io.github.llh4github.jimmer.ksp.dto.ConvertExtFunAnnoInfo
 import io.github.llh4github.jimmer.ksp.dto.ConvertTargetInfo
 import io.github.llh4github.list.ToJimmerEntity
-import io.github.llh4github.list.ToJimmerEntityField
+import io.github.llh4github.core.ToJimmerEntityField
 import org.babyfish.jimmer.ksp.annotation
 import org.babyfish.jimmer.ksp.annotations
 import org.babyfish.jimmer.ksp.name

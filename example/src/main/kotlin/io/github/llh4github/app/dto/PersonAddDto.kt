@@ -3,7 +3,7 @@ package io.github.llh4github.app.dto
 
 import io.github.llh4github.app.entity.Person
 import io.github.llh4github.list.ToJimmerEntity
-import io.github.llh4github.list.ToJimmerEntityField
+import io.github.llh4github.core.ToJimmerEntityField
 
 
 @ToJimmerEntity(Person::class, ignoreFields = ["a", "b", "c"])
