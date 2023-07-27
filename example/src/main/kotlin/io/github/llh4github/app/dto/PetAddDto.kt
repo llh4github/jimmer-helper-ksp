@@ -1,7 +1,7 @@
 package io.github.llh4github.app.dto
 
 import io.github.llh4github.app.entity.Pet
-import io.github.llh4github.list.ToJimmerEntity
+import io.github.llh4github.core.ToJimmerEntity
 import io.github.llh4github.core.ToJimmerEntityField
 
 /**
