@@ -5,7 +5,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFile
 import io.github.llh4github.jimmer.ksp.common.*
 import io.github.llh4github.jimmer.ksp.dto.ClassInfoDto
-import io.github.llh4github.list.ToJimmerEntity
+import io.github.llh4github.core.ToJimmerEntity
 import org.babyfish.jimmer.ksp.className
 /**
  * 抽取Jimmer框架的模型对象
