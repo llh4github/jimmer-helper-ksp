@@ -1,4 +1,4 @@
-package io.github.llh4github.jimmer.ksp.generator
+package io.github.llh4github.jimmer.ksp.parser
 
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration

@@ -13,7 +13,7 @@ import com.squareup.kotlinpoet.FileSpec
 import io.github.llh4github.jimmer.ksp.common.logger
 import io.github.llh4github.jimmer.ksp.extract.extractJimmerEntityInfo
 import io.github.llh4github.jimmer.ksp.extract.extractMyAnnoClassInfo
-import io.github.llh4github.jimmer.ksp.generator.ClassDefinitionParser
+import io.github.llh4github.jimmer.ksp.parser.ClassDefinitionParser
 import io.github.llh4github.jimmer.ksp.generator.InputClassGen
 import io.github.llh4github.jimmer.ksp.generator.SuperInterfaceGen
 import io.github.llh4github.jimmer.ksp.generator.toJimmerEntityExtFunGen
