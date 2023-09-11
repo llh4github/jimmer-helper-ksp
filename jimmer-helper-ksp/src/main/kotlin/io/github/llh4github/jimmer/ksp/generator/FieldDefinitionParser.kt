@@ -3,8 +3,12 @@ package io.github.llh4github.jimmer.ksp.generator
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.Nullability
+import com.squareup.kotlinpoet.asClassName
+import com.squareup.kotlinpoet.ksp.toTypeName
+import io.github.llh4github.core.ToJimmerEntityField
 import io.github.llh4github.jimmer.ksp.common.*
 import io.github.llh4github.jimmer.ksp.dto.FieldDefinition
+import io.github.llh4github.jimmer.ksp.dto.HelperFieldRestrict
 import io.github.llh4github.jimmer.ksp.dto.JimmerFieldRestrict
 import io.github.llh4github.jimmer.ksp.dto.TypeInfo
 
@@ -50,7 +54,8 @@ class FieldDefinitionParser(
             typeInfo = typeInfo,
             genericParam = genericParam,
             nullable = property.type.resolve().nullability == Nullability.NULLABLE,
-            jimmerFieldRestrict = parseJimmerFieldRestrict(property)
+            jimmerFieldRestrict = parseJimmerFieldRestrict(property),
+            helperFieldRestrict = parseHelperFieldRestrict(property),
         )
     }
 
@@ -65,5 +70,22 @@ class FieldDefinitionParser(
             isRelation = isRelation,
             isIdViewListField = isIdViewListFlag
         )
+    }
+
+    private fun parseHelperFieldRestrict(property: KSPropertyDeclaration): HelperFieldRestrict {
+        var rename = property.simpleName.asString()
+        var ignore = false
+        property.annotations.filter {
+            val annoClassName = it.annotationType.toTypeName()
+            annoClassName == ToJimmerEntityField::class.asClassName()
+        }.forEach {
+            ignore = it.arguments.getValue(ToJimmerEntityFieldProperties.ignore) as Boolean
+            val name = it.arguments.getValue(ToJimmerEntityFieldProperties.rename) as String
+            if (name.isNotEmpty()) {
+                rename = name
+            }
+        }
+
+        return HelperFieldRestrict(rename, ignore)
     }
 }

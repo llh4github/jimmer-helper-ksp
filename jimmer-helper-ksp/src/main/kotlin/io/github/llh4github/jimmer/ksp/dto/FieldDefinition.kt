@@ -31,7 +31,11 @@ data class FieldDefinition(
     /**
      * Jimmer框架对此字段的约束
      */
-    var jimmerFieldRestrict: JimmerFieldRestrict = JimmerFieldRestrict(),
+    val jimmerFieldRestrict: JimmerFieldRestrict = JimmerFieldRestrict(),
+    /**
+     * 辅助插件对此字段的约束
+     */
+    val helperFieldRestrict: HelperFieldRestrict? = null,
 ) {
     /**
      * 当前字段是否为List类型
@@ -73,6 +77,6 @@ data class JimmerFieldRestrict(
 )
 
 data class HelperFieldRestrict(
-    val rawName: String,
     val rename: String,
+    val ignore: Boolean = false,
 )

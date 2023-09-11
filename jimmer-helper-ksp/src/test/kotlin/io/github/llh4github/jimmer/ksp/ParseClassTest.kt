@@ -24,6 +24,9 @@ class ParseClassTest : BaseTest() {
                 import java.math.BigDecimal
                 import java.time.LocalDateTime
 
+                import io.github.llh4github.core.ToJimmerEntity
+                import io.github.llh4github.core.ToJimmerEntityField
+
                 @Entity
                 interface Person {
                     @Id
@@ -37,6 +40,14 @@ class ParseClassTest : BaseTest() {
                     val other:List<BigDecimal>
                     val createdTime: LocalDateTime
                 }
+
+            @ToJimmerEntity(Person::class, ignoreFields = ["other", "b", "c"])
+            data class PersonAddDto(
+                val name: String,
+                val age: Int?,
+                @ToJimmerEntityField(ignore = true, rename = "another")
+                val other: String,
+            )
             """.trimIndent()
         )
         val result = compile(source)
