@@ -56,7 +56,7 @@ val ignoreAnnoList =
 
 
 /**
- * [com.github.llh4github.jimmerhelper.ToJimmerEntityField]注解的属性名
+ * [io.github.llh4github.core.ToJimmerEntityField]注解的属性名
  */
 object ToJimmerEntityFieldProperties {
     const val ignore = "ignore"
@@ -64,7 +64,7 @@ object ToJimmerEntityFieldProperties {
 }
 
 /**
- * [com.github.llh4github.jimmerhelper.ToJimmerEntity]注解的属性名
+ * [io.github.llh4github.core.ToJimmerEntity]注解的属性名
  */
 object ToJimmerEntityProperties {
 
