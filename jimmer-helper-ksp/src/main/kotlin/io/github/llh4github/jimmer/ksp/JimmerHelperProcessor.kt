@@ -13,7 +13,7 @@ import com.squareup.kotlinpoet.FileSpec
 import io.github.llh4github.jimmer.ksp.common.logger
 import io.github.llh4github.jimmer.ksp.extract.extractJimmerEntityInfo
 import io.github.llh4github.jimmer.ksp.extract.extractMyAnnoClassInfo
-import io.github.llh4github.jimmer.ksp.generator.FieldDefinitionParser
+import io.github.llh4github.jimmer.ksp.generator.ClassDefinitionParser
 import io.github.llh4github.jimmer.ksp.generator.InputClassGen
 import io.github.llh4github.jimmer.ksp.generator.SuperInterfaceGen
 import io.github.llh4github.jimmer.ksp.generator.toJimmerEntityExtFunGen
@@ -33,7 +33,7 @@ class JimmerHelperProcessor(private val codeGenerator: CodeGenerator) : SymbolPr
         logger.info("process start")
         val files = resolver.getAllFiles()
         val sequence = convertKsClassSequence(files)
-        FieldDefinitionParser(sequence).parse()
+        val classDefinition = ClassDefinitionParser(sequence).parse()
 
         val jimmerEntities = extractJimmerEntityInfo(files)
         toJimmerEntityExtFunGen(extractMyAnnoClassInfo(files), jimmerEntities)

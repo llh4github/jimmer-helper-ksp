@@ -19,14 +19,13 @@ import io.github.llh4github.jimmer.ksp.dto.TypeInfo
  * @author llh
  */
 class FieldDefinitionParser(
-    private val sequence: Sequence<KSClassDeclaration>
+    private val definition: KSClassDeclaration
 ) {
 
-    fun parse() {
-        sequence.flatMap { it.getAllProperties() }
-            .toList()
+    fun parse(): List<FieldDefinition> {
+        return definition.getAllProperties()
             .map { parseFieldInfo(it) }
-            .forEach { println(it) }
+            .toList()
     }
 
     private fun parseFieldInfo(property: KSPropertyDeclaration): FieldDefinition {
