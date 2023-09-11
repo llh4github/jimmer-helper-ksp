@@ -21,5 +21,9 @@ dependencies {
     implementation("com.facebook:ktfmt")
     implementation("com.squareup:kotlinpoet")
     implementation("com.squareup:kotlinpoet-ksp")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     testImplementation("com.github.tschuchortdev:kotlin-compile-testing-ksp:1.5.0")
+}
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

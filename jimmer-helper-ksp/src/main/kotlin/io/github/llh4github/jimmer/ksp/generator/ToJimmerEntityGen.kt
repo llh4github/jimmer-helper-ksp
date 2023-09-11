@@ -141,7 +141,7 @@ private fun isFieldInTargetClass(
 }
 
 /**
- * 解析[io.github.llh4github.list.ToJimmerEntity]注解的参数值。
+ * 解析[io.github.llh4github.core.ToJimmerEntity]注解的参数值。
  */
 private fun parseConvertExtFunAnnoArguments(
     classDeclaration: KSClassDeclaration

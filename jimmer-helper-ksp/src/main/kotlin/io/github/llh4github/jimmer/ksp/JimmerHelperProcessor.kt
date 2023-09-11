@@ -1,4 +1,5 @@
 package io.github.llh4github.jimmer.ksp
+
 import com.facebook.ktfmt.format.Formatter
 import com.facebook.ktfmt.format.FormattingOptions
 import com.google.devtools.ksp.processing.CodeGenerator
@@ -6,10 +7,13 @@ import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSFile
 import com.squareup.kotlinpoet.FileSpec
 import io.github.llh4github.jimmer.ksp.common.logger
 import io.github.llh4github.jimmer.ksp.extract.extractJimmerEntityInfo
 import io.github.llh4github.jimmer.ksp.extract.extractMyAnnoClassInfo
+import io.github.llh4github.jimmer.ksp.generator.FieldDefinitionParser
 import io.github.llh4github.jimmer.ksp.generator.InputClassGen
 import io.github.llh4github.jimmer.ksp.generator.SuperInterfaceGen
 import io.github.llh4github.jimmer.ksp.generator.toJimmerEntityExtFunGen
@@ -28,6 +32,8 @@ class JimmerHelperProcessor(private val codeGenerator: CodeGenerator) : SymbolPr
         }
         logger.info("process start")
         val files = resolver.getAllFiles()
+        val sequence = convertKsClassSequence(files)
+        FieldDefinitionParser(sequence).parse()
 
         val jimmerEntities = extractJimmerEntityInfo(files)
         toJimmerEntityExtFunGen(extractMyAnnoClassInfo(files), jimmerEntities)
@@ -56,6 +62,11 @@ class JimmerHelperProcessor(private val codeGenerator: CodeGenerator) : SymbolPr
             }
         logger.info("process end")
         return emptyList()
+    }
+
+    private fun convertKsClassSequence(files: Sequence<KSFile>): Sequence<KSClassDeclaration> {
+        return files
+            .flatMap { it.declarations.filterIsInstance<KSClassDeclaration>() }
     }
 
     private fun formatCode(fileSpec: FileSpec): String {
