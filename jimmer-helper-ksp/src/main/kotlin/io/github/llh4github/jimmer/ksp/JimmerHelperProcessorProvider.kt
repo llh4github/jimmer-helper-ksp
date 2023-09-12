@@ -24,7 +24,7 @@ class JimmerHelperProcessorProvider : SymbolProcessorProvider {
         environment.options[OptionKey.hello]?.let {
             logger.info("Hello $it, This is Jimmer-Helper-KSP.")
         }
-        logger.info("生成 inputDto 对象插件运行成功")
+        logger.info("jimmer-helper插件运行成功")
         return JimmerHelperProcessor(environment.codeGenerator)
 
     }

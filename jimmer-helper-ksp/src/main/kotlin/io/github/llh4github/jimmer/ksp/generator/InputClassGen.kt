@@ -9,6 +9,10 @@ import io.github.llh4github.jimmer.ksp.dto.ClassInfoDto
 import io.github.llh4github.jimmer.ksp.dto.FieldInfoDto
 import javaslang.Tuple2
 
+@Deprecated(
+    replaceWith = ReplaceWith("io.github.llh4github.jimmer.ksp.generator.InputSupportDtoGen"),
+    message = "换了实现方法"
+)
 class InputClassGen(private val dto: ClassInfoDto) {
     private val typeSpec = dataClassBuilder(dto)
 

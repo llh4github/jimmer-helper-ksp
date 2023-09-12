@@ -1,6 +1,6 @@
 package io.github.llh4github.jimmer.ksp.dto
 /**
- * 生成转换拓展方法[io.github.llh4github.list.ToJimmerEntity]注解的参数信息
+ * 生成转换拓展方法[io.github.llh4github.core.ToJimmerEntity]注解的参数信息
  *
  * Created At 2023/6/16 16:52
  * @author llh
