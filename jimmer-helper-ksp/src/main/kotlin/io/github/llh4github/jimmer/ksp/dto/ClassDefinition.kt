@@ -1,5 +1,8 @@
 package io.github.llh4github.jimmer.ksp.dto
 
+import io.github.llh4github.jimmer.ksp.common.inputDtoPkgName
+import io.github.llh4github.jimmer.ksp.common.inputDtoSuffix
+
 /**
  *
  *
@@ -18,7 +21,8 @@ data class ClassDefinition(
     val packageName: String,
 
     val isJimmerModel: Boolean = false,
-    val isHelperDtoClass:Boolean =false,
+
+    val isHelperDtoClass: Boolean = false,
 
     /**
      * 类注释
@@ -39,4 +43,15 @@ data class ClassDefinition(
      * 是否是被[org.babyfish.jimmer.sql.MappedSuperclass]注解修饰的类
      */
     val isMappedSuperclass: Boolean = false,
-)
+) {
+
+    /**
+     * input-dto辅助类名
+     */
+    val inputDtoClassName = "${name}$inputDtoSuffix"
+
+    /**
+     * input-dto 辅助类的包名
+     */
+    val inputDtoPkg = "${packageName}.$inputDtoPkgName"
+}

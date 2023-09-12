@@ -1,5 +1,6 @@
 package io.github.llh4github.jimmer.ksp
 
+import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.symbolProcessorProviders
@@ -12,14 +13,28 @@ import org.jetbrains.kotlin.config.JvmTarget
  * @author llh
  */
 abstract class BaseTest {
-    protected fun compile(vararg sourceFiles: SourceFile): KotlinCompilation.Result {
-        return prepareCompilation(*sourceFiles).compile()
+    protected fun compile(
+        provider: SymbolProcessorProvider = JimmerHelperProcessorProvider(),
+        vararg sourceFiles: SourceFile
+    ): KotlinCompilation.Result {
+        return prepareCompilation(provider, *sourceFiles).compile()
     }
 
-    private fun prepareCompilation(vararg sourceFiles: SourceFile): KotlinCompilation {
+    protected fun compile(
+        provider: TestProcessorProvider,
+        vararg sourceFiles: SourceFile
+    ): List<String> {
+        prepareCompilation(provider, *sourceFiles).compile()
+        return provider.outcome
+    }
+
+    private fun prepareCompilation(
+        provider: SymbolProcessorProvider,
+        vararg sourceFiles: SourceFile
+    ): KotlinCompilation {
         return KotlinCompilation().apply {
             sources = sourceFiles.asList()
-            symbolProcessorProviders = listOf(JimmerHelperProcessorProvider())
+            symbolProcessorProviders = listOf(provider)
             inheritClassPath = true
             sources = sourceFiles.asList()
             verbose = false

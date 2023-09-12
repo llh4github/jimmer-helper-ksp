@@ -1,5 +1,11 @@
 package io.github.llh4github.jimmer.ksp.dto
 
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.TypeName
+import io.github.llh4github.jimmer.ksp.common.inputDtoPkgName
+import io.github.llh4github.jimmer.ksp.common.inputDtoSuffix
+
 /**
  *
  *
@@ -41,6 +47,19 @@ data class FieldDefinition(
      * 当前字段是否为List类型
      */
     val isListField = genericParam != null
+
+    fun propertyType(): TypeName {
+        return if (jimmerFieldRestrict.isRelation) {
+            if (isListField && genericParam != null) {
+                ClassName(typeInfo.typePackage, typeInfo.typeName)
+                    .parameterizedBy(ClassName(genericParam.inputDtoPkg, genericParam.inputDtoClassName))
+            }else{
+                ClassName(typeInfo.inputDtoPkg,typeInfo.inputDtoClassName).copy(true)
+            }
+        }else{
+            ClassName(typeInfo.typePackage, typeInfo.typeName).copy(true)
+        }
+    }
 }
 
 data class TypeInfo(
@@ -54,7 +73,18 @@ data class TypeInfo(
      * 字段类型名
      */
     val typeName: String,
-)
+) {
+    /**
+     * input-dto辅助类名
+     */
+    val inputDtoClassName = "${typeName}$inputDtoSuffix"
+
+    /**
+     * input-dto 辅助类的包名
+     */
+    val inputDtoPkg = "${typePackage}.$inputDtoPkgName"
+
+}
 
 data class JimmerFieldRestrict(
 
