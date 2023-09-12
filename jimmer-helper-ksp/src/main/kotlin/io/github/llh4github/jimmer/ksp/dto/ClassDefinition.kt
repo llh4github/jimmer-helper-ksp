@@ -14,7 +14,6 @@ data class ClassDefinition(
      * 类名
      */
     val name: String,
-
     /**
      * 包名
      */
@@ -22,6 +21,9 @@ data class ClassDefinition(
 
     val isJimmerModel: Boolean = false,
 
+    /**
+     * 是否被[io.github.llh4github.core.ToJimmerEntity]注解修饰
+     */
     val isHelperDtoClass: Boolean = false,
 
     /**
@@ -43,6 +45,8 @@ data class ClassDefinition(
      * 是否是被[org.babyfish.jimmer.sql.MappedSuperclass]注解修饰的类
      */
     val isMappedSuperclass: Boolean = false,
+
+    val helperAnnoInfo: ToJimmerAnnoInfo? = null,
 ) {
 
     /**
@@ -51,7 +55,37 @@ data class ClassDefinition(
     val inputDtoClassName = "${name}$inputDtoSuffix"
 
     /**
+     * Jimmer框架的Draft对象
+     */
+    val draftClass = "${name}Draft"
+
+    /**
      * input-dto 辅助类的包名
      */
     val inputDtoPkg = "${packageName}.$inputDtoPkgName"
+
+    /**
+     * 当前类被标记为忽略的字段名
+     */
+    val ignoreFields: List<String> by lazy {
+        val rs = mutableListOf<String>()
+        helperAnnoInfo?.let {
+            rs.addAll(it.ignoreFields)
+        }
+        fields.asSequence()
+            .filterNot { it.helperFieldRestrict == null }
+            .filter { it.helperFieldRestrict!!.ignore }
+            .map { it.name }
+            .distinct()
+            .toList()
+            .takeIf { it.isNotEmpty() }?.let {
+                rs.addAll(it)
+            }
+        rs
+    }
 }
+
+data class ToJimmerAnnoInfo(
+    val targetType: TypeInfo,
+    val ignoreFields: List<String>,
+)

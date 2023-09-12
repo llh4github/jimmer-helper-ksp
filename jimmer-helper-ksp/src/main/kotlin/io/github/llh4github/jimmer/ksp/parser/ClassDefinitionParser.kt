@@ -2,9 +2,13 @@ package io.github.llh4github.jimmer.ksp.parser
 
 import com.google.devtools.ksp.getAllSuperTypes
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSType
 import io.github.llh4github.core.ToJimmerEntity
 import io.github.llh4github.jimmer.ksp.common.*
 import io.github.llh4github.jimmer.ksp.dto.ClassDefinition
+import io.github.llh4github.jimmer.ksp.dto.ToJimmerAnnoInfo
+import io.github.llh4github.jimmer.ksp.dto.TypeInfo
+import org.babyfish.jimmer.ksp.annotation
 import org.babyfish.jimmer.ksp.className
 
 /**
@@ -36,8 +40,21 @@ class ClassDefinitionParser(
             isHelperDtoClass = declaration.annotations.hasAnno(ToJimmerEntity::class),
             isJimmerModel = declaration.annotations.hasAnyAnno(JimmerEntityAnno),
             isMappedSuperclass = declaration.annotations.hasAnno(JimmerAnno.superclass),
+            helperAnnoInfo = generateExtFun(declaration),
         )
     }
+
+    private fun generateExtFun(definition: KSClassDeclaration): ToJimmerAnnoInfo? {
+        val anno = definition.annotation(ToJimmerEntity::class) ?: return null
+        val kClass = anno.arguments.getValue(ToJimmerEntityProperties.jimmerEntity) as KSType
+        val target = TypeInfo(
+            kClass.declaration.packageName.asString(),
+            kClass.declaration.simpleName.asString(),
+        )
+        val ignoreFields = anno.arguments.getValue(ToJimmerEntityProperties.ignoreFields) as List<*>
+        return ToJimmerAnnoInfo(target, ignoreFields.map { it as String }.toList())
+    }
+
 
     private fun extractParentNames(classDeclaration: KSClassDeclaration): List<String> {
         return classDeclaration.getAllSuperTypes()

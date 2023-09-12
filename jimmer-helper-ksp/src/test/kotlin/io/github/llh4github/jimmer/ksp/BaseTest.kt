@@ -82,6 +82,8 @@ package io.github.llh4github.app.model
 
 import org.babyfish.jimmer.sql.*
 import java.time.LocalDateTime
+import io.github.llh4github.core.ToJimmerEntity
+import io.github.llh4github.core.ToJimmerEntityField
 
 @MappedSuperclass
 interface BaseModel {
@@ -119,6 +121,13 @@ interface Book : BaseModel {
     @IdView("authors")
     val authorIds: List<Int>
 }
+
+@ToJimmerEntity(Book::class, ignoreFields = ["other", "b", "c"])
+data class BookAddDto(
+    val name: String,
+    val price: Int?,
+    val other: String,
+)
     """.trimIndent()
     //endregion 输入案例
 }

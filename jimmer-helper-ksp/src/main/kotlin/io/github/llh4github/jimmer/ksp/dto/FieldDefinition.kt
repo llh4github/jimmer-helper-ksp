@@ -48,6 +48,10 @@ data class FieldDefinition(
      */
     val isListField = genericParam != null
 
+    /**
+     * 当前字段的扮演名称。
+     */
+    val actName: String = helperFieldRestrict?.rename ?: name
     fun propertyType(): TypeName {
         return if (jimmerFieldRestrict.isRelation) {
             if (isListField && genericParam != null) {
