@@ -3,10 +3,7 @@ package io.github.llh4github.jimmer.ksp.parser
 import com.google.devtools.ksp.getAllSuperTypes
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import io.github.llh4github.core.ToJimmerEntity
-import io.github.llh4github.jimmer.ksp.common.JimmerAnno
-import io.github.llh4github.jimmer.ksp.common.JimmerEntityAnno
-import io.github.llh4github.jimmer.ksp.common.hasAnno
-import io.github.llh4github.jimmer.ksp.common.hasAnyAnno
+import io.github.llh4github.jimmer.ksp.common.*
 import io.github.llh4github.jimmer.ksp.dto.ClassDefinition
 import org.babyfish.jimmer.ksp.className
 
@@ -20,8 +17,14 @@ class ClassDefinitionParser(
     private val sequence: Sequence<KSClassDeclaration>
 ) {
     fun parse(): List<ClassDefinition> {
-        return sequence.map { parseClass(it) }
-            .toList()
+        return try {
+            sequence
+                .map { parseClass(it) }
+                .toList()
+        } catch (e: Exception) {
+            logger.warn("源代码有异常，jimmer-helper-ksp插件无法生成对应代码： $e")
+            emptyList()
+        }
     }
 
     private fun parseClass(declaration: KSClassDeclaration): ClassDefinition {

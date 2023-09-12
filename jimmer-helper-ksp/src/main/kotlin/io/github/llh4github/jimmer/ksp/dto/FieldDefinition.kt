@@ -53,11 +53,20 @@ data class FieldDefinition(
             if (isListField && genericParam != null) {
                 ClassName(typeInfo.typePackage, typeInfo.typeName)
                     .parameterizedBy(ClassName(genericParam.inputDtoPkg, genericParam.inputDtoClassName))
-            }else{
-                ClassName(typeInfo.inputDtoPkg,typeInfo.inputDtoClassName).copy(true)
+                    .copy(false)
+            } else {
+                ClassName(typeInfo.inputDtoPkg, typeInfo.inputDtoClassName).copy(true)
             }
-        }else{
+        } else {
             ClassName(typeInfo.typePackage, typeInfo.typeName).copy(true)
+        }
+    }
+
+    fun propertyDefaultValueStr(): String {
+        return if (isListField) {
+            "emptyList()"
+        } else {
+            "null"
         }
     }
 }
