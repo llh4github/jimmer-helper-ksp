@@ -28,11 +28,9 @@ class JimmerHelperProcessor(private val codeGenerator: CodeGenerator) : SymbolPr
         if (!processed.compareAndSet(false, true)) {
             return emptyList()
         }
-        logger.info("process start")
         val files = resolver.getAllFiles()
         val sequence = convertKsClassSequence(files)
         val classDefinition = ClassDefinitionParser(sequence).parse()
-
         generate(classDefinition).forEach {
             val file = codeGenerator.createNewFile(
                 Dependencies(aggregating = false),
@@ -42,7 +40,6 @@ class JimmerHelperProcessor(private val codeGenerator: CodeGenerator) : SymbolPr
                 out.write(formatCode(it))
             }
         }
-        logger.info("process end")
         return emptyList()
     }
 
