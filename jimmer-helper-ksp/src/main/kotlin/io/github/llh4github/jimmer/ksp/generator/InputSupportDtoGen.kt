@@ -31,6 +31,7 @@ object InputSupportDtoGen : AbstractGenerator() {
         val fileBuilder = FileSpec.builder(definition.inputDtoPkg, definition.inputDtoClassName)
             .addImport(definition.packageName, definition.name)
         fileBuilder.addImport(definition.packageName, "by")
+        fileBuilder.addImport(definition.packageName, "addBy")
         val constructorProperties = mutableListOf<PropertySpec>()
         val constructFun = constructorFun(definition, constructorProperties)
         return fileBuilder.addType(
@@ -52,7 +53,8 @@ object InputSupportDtoGen : AbstractGenerator() {
     ): FunSpec {
         val constructorFun = FunSpec.constructorBuilder()
         definition.fields
-            .filter { !it.jimmerFieldRestrict.isIdViewListField }
+            .filterNot { it.jimmerFieldRestrict.isIdViewListField }
+            .filterNot { it.jimmerFieldRestrict.isComputeField }
             .forEach {
                 val type = it.propertyType()
                 val defaultValue = it.propertyDefaultValueStr()
@@ -101,7 +103,10 @@ object InputSupportDtoGen : AbstractGenerator() {
             .returns(ClassName(definition.packageName, definition.name))
             .addCode("return ")
             .addStatement("%M(%L::class).by{", JimmerMember.newFun, definition.name)
-        definition.fields.forEach {
+        definition.fields
+            .filterNot { it.jimmerFieldRestrict.isIdViewListField }
+            .filterNot { it.jimmerFieldRestrict.isComputeField }
+            .forEach {
             if (it.jimmerFieldRestrict.isIdViewListField) {
                 return@forEach
             }

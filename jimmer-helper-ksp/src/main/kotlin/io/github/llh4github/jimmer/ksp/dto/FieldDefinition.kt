@@ -117,6 +117,11 @@ data class JimmerFieldRestrict(
      * 是否为集合类型的IdView字段
      */
     val isIdViewListField: Boolean = false,
+
+    /**
+     * 是否为计算字段
+     */
+    val isComputeField: Boolean = false
 )
 
 data class HelperFieldRestrict(

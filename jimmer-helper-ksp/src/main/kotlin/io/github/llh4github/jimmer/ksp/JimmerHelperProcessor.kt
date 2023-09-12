@@ -13,11 +13,8 @@ import com.squareup.kotlinpoet.FileSpec
 import io.github.llh4github.jimmer.ksp.common.logger
 import io.github.llh4github.jimmer.ksp.extract.extractJimmerEntityInfo
 import io.github.llh4github.jimmer.ksp.extract.extractMyAnnoClassInfo
-import io.github.llh4github.jimmer.ksp.generator.BaseClassGen
+import io.github.llh4github.jimmer.ksp.generator.*
 import io.github.llh4github.jimmer.ksp.parser.ClassDefinitionParser
-import io.github.llh4github.jimmer.ksp.generator.InputClassGen
-import io.github.llh4github.jimmer.ksp.generator.SuperInterfaceGen
-import io.github.llh4github.jimmer.ksp.generator.toJimmerEntityExtFunGen
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -36,32 +33,15 @@ class JimmerHelperProcessor(private val codeGenerator: CodeGenerator) : SymbolPr
         val sequence = convertKsClassSequence(files)
         val classDefinition = ClassDefinitionParser(sequence).parse()
 
-        BaseClassGen.generate(classDefinition)
-        val jimmerEntities = extractJimmerEntityInfo(files)
-        toJimmerEntityExtFunGen(extractMyAnnoClassInfo(files), jimmerEntities)
-            .forEach {
-                val file = codeGenerator.createNewFile(
-                    Dependencies(aggregating = false),
-                    it.packageName, it.name
-                )
-                file.writer(Charsets.UTF_8).use { out ->
-                    out.write(formatCode(it))
-                }
+        generate(classDefinition).forEach {
+            val file = codeGenerator.createNewFile(
+                Dependencies(aggregating = false),
+                it.packageName, it.name
+            )
+            file.writer(Charsets.UTF_8).use { out ->
+                out.write(formatCode(it))
             }
-        jimmerEntities
-            .map {
-                if (it.isSupperClass) SuperInterfaceGen(it).build()
-                else InputClassGen(it).build()
-            }.forEach {
-                val file = codeGenerator.createNewFile(
-                    Dependencies(aggregating = false),
-                    it.packageName, it.name
-                )
-
-                file.writer(Charsets.UTF_8).use { out ->
-                    out.write(formatCode(it))
-                }
-            }
+        }
         logger.info("process end")
         return emptyList()
     }

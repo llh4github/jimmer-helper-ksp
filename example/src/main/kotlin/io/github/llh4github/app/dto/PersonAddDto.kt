@@ -6,7 +6,7 @@ import io.github.llh4github.core.ToJimmerEntity
 import io.github.llh4github.core.ToJimmerEntityField
 
 
-@ToJimmerEntity(Person::class, ignoreFields = ["a", "b", "c"])
+@ToJimmerEntity(Person::class, ignoreFields = ["a", "b", "c", "pets"])
 data class PersonUpdateDto(
     override val id: Long,
     val name: String,

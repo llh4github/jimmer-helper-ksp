@@ -63,11 +63,13 @@ class FieldDefinitionParser(
         val isJimmerId = property.annotations.hasAnno(JimmerAnno.id)
         val isRelation = property.annotations.hasAnyAnno(relationAnnoList)
         val isIdViewListFlag = property.annotations.hasAnno(JimmerAnno.idView)
+        val isComputeField = property.annotations.hasAnyAnno(ignoreAnnoList)
         return JimmerFieldRestrict(
             isJimmerKey = isJimmerKey,
             isPrimaryKey = isJimmerId,
             isRelation = isRelation,
-            isIdViewListField = isIdViewListFlag
+            isIdViewListField = isIdViewListFlag,
+            isComputeField = isComputeField,
         )
     }
 

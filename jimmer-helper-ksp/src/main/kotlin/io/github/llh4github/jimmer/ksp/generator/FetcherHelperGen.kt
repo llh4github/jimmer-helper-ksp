@@ -12,6 +12,10 @@ import io.github.llh4github.jimmer.ksp.dto.FieldInfoDto
  * Created At 2023/6/9 10:43
  * @author llh
  */
+@Deprecated(
+    message = "换了实现",
+    replaceWith = ReplaceWith("io.github.llh4github.jimmer.ksp.generator.SimpleFetcherGen")
+)
 class FetcherHelperGen(private val dto: ClassInfoDto) {
     private fun fetcherReturnType(dto: ClassInfoDto): ParameterizedTypeName {
         return JimmerMember.fetcherClass.parameterizedBy(ClassName(dto.packageName, dto.className))
