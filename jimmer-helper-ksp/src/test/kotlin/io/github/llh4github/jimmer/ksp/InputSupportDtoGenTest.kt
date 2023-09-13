@@ -43,12 +43,12 @@ public data class PersonInput(
     }
 
     @Test
-    fun a() {
+    fun `relation model gen test`() {
         val source = SourceFile.kotlin(
             "Test2.kt",
             twoModelRelation
         )
         val result = compile(TestProcessorProvider(InputSupportDtoGen), source)
-        println(result)
+        assertEquals(2, result.size)
     }
 }
