@@ -16,12 +16,14 @@ object SimpleFetcherGen : AbstractGenerator() {
     private val fileBuilderMap: MutableMap<String, FileSpec.Builder> = mutableMapOf()
     override fun generate(list: List<ClassDefinition>): List<FileSpec> {
         list.filter { it.isJimmerModel }
+            .filterNot { it.isMappedSuperclass }
             .forEach { fetcherCode(it) }
         return fileBuilderMap.values.map { it.addFileComment("由插件生成。请勿修改。").build() }.toList()
     }
 
     private fun fetcherCode(definition: ClassDefinition) {
-        val fileBuilder = fileBuilder(definition.packageName)
+        val fileBuilder = fileBuilder(definition.inputDtoPkg)
+            .addImport(definition.packageName, "by")
         val builder = TypeSpec.objectBuilder("${definition.name}SimpleFetcher")
             .addAnnotation(suppressWarns)
         builder.addProperty(allScalarFieldsProperty(definition))

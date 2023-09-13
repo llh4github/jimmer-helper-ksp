@@ -1,9 +1,9 @@
 package io.github.llh4github.jimmer.ksp
 
 import com.tschuchort.compiletesting.SourceFile
-import io.github.llh4github.jimmer.ksp.generator.BaseClassGen
 import io.github.llh4github.jimmer.ksp.generator.ToJimmerEntityFunGen
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
 /**
  *
@@ -13,12 +13,12 @@ import org.junit.jupiter.api.Test
  */
 class ToJimmerEntityFunGenTest : BaseTest() {
     @Test
-    fun a(){
+    fun `ext fun gen test`() {
         val source = SourceFile.kotlin(
             "Test.kt",
             twoModelRelation
         )
         val result = compile(TestProcessorProvider(ToJimmerEntityFunGen), source)
-        println(result)
+        assertEquals(1, result.size)
     }
 }
