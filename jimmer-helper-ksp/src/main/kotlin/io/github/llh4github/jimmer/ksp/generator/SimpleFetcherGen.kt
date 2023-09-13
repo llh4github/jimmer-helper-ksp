@@ -22,7 +22,8 @@ object SimpleFetcherGen : AbstractGenerator() {
     }
 
     private fun fetcherCode(definition: ClassDefinition) {
-        val fileBuilder = fileBuilder(definition.packageName)
+        val fileBuilder = fileBuilder(definition.inputDtoPkg)
+            .addImport(definition.packageName, "by")
         val builder = TypeSpec.objectBuilder("${definition.name}SimpleFetcher")
             .addAnnotation(suppressWarns)
         builder.addProperty(allScalarFieldsProperty(definition))
